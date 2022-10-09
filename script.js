@@ -1,4 +1,5 @@
-var videos = ["tdSjnPCO39s", "pYoMiqaAvPY", "TWmxQjlRh-k", "2ODdOwrKe2k"];
+var videos = ["pYoMiqaAvPY", "TWmxQjlRh-k", "tdSjnPCO39s", "2ODdOwrKe2k"];
+
 let currentVideoIndex = 0;
 var tag = document.createElement("script");
 tag.src = "https://www.youtube.com/iframe_api";
@@ -24,9 +25,29 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
+function timeToAlert() {
+    console.log("inside this function ");
+    player.stopVideo();
+    currentVideoIndex = currentVideoIndex + 1;
+    player.loadVideoById(videos[currentVideoIndex]);
+}
+
 // 4. The API will call this function when the video player is ready.
 function onPlayerReady(event) {
     event.target.playVideo();
+
+    var timeIsBeing936 = new Date("10/09/2022 10:06:00 AM").getTime(),
+        currentTime = new Date().getTime(),
+        subtractMilliSecondsValue = timeIsBeing936 - currentTime;
+
+    console.log(subtractMilliSecondsValue);
+
+    if (subtractMilliSecondsValue > 0) {
+        setTimeout(timeToAlert, subtractMilliSecondsValue);
+    }
+
+    console.log("inside onPlayerReady");
+
     console.log(event.target.getVideoData().video_id);
     console.log(event.target.getVideoData().title);
 }
