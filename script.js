@@ -175,9 +175,11 @@ var videosJson = {
 
 setInterval(liveVideoCheck, 10000);
 
+var TimeoutID = "";
 let videos = videosJson["Master"];
 var video = {};
 let currentVideoIndex = 0;
+var currentLiveVideoId = ""
 
 var tag = document.createElement("script");
 tag.src = "https://www.youtube.com/iframe_api";
@@ -347,9 +349,18 @@ async function liveVideoCheck() {
         
         console.log(res);
         console.log("Live video Check ....... ");
+        let title = JSON.parse(res).data.title
+        console.log(title)
+        if( title.includes("Live Swaminarayan TV") && currentLiveVideoId != JSON.parse(res).data.video_id ){
 
-        
+            player.stopVideo();
+            player.loadVideoById(JSON.parse(res).data.video_id);
 
+            currentLiveVideoId = JSON.parse(res).data.video_id
+
+        }else{
+            currentLiveVideoId = ""
+        }
     
     });
 
