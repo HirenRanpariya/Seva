@@ -210,6 +210,8 @@ function onYouTubeIframeAPIReady() {
 function onPlayerReady(event) {
     event.target.playVideo();
 
+    liveVideoCheck()
+
     video = getCurrentVideo(videosJson[getDayName()]);
     console.log("video current function " + video);
     let subtractMilliSecondsValue = -1;
@@ -351,15 +353,16 @@ async function liveVideoCheck() {
         console.log("Live video Check ....... ");
         let title = JSON.parse(res).data.title
         console.log(title)
+        console.log(title.includes("Live Swaminarayan TV"))
+        console.log(currentLiveVideoId != JSON.parse(res).data.video_id)
         if( title.includes("Live Swaminarayan TV") && currentLiveVideoId != JSON.parse(res).data.video_id ){
 
+            console.log("Live video is playing Now -------------")
             player.stopVideo();
             player.loadVideoById(JSON.parse(res).data.video_id);
 
             currentLiveVideoId = JSON.parse(res).data.video_id
 
-        }else{
-            currentLiveVideoId = ""
         }
     
     });
@@ -379,7 +382,7 @@ var checkLiveVideo = async ( callback ) => {
             redirect: "follow",
         };
     
-        await fetch("https://dev.swaminarayanbhagwan.org:15000/wp-json/sb/v1/video/live", requestOptions)
+        await fetch("https://cms.swaminarayanbhagwan.org/wp-json/sb/v1/video/live", requestOptions)
             .then((response) => response.text())
             .then((result) => {
                 
