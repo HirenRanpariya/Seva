@@ -353,9 +353,9 @@ async function liveVideoCheck() {
         console.log("Live video Check ....... ");
         let title = JSON.parse(res).data.title
         console.log(title)
-        console.log(title.includes("Live Swaminarayan TV"))
+        console.log(!title.includes("Live Swaminarayan TV"))
         console.log(currentLiveVideoId != JSON.parse(res).data.video_id)
-        if( title.includes("Live Swaminarayan TV") && currentLiveVideoId != JSON.parse(res).data.video_id ){
+        if( !title.includes("Live Swaminarayan TV") && currentLiveVideoId != JSON.parse(res).data.video_id ){
 
             console.log("Live video is playing Now -------------")
             player.stopVideo();
