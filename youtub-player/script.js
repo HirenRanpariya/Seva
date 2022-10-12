@@ -364,6 +364,13 @@ async function liveVideoCheck() {
             currentLiveVideoId = JSON.parse(res).data.video_id
 
         }
+        else{
+
+            player.stopVideo();
+            currentVideoIndex = currentVideoIndex + 1;
+            player.loadVideoById(video.id);
+
+        }
     
     });
 
