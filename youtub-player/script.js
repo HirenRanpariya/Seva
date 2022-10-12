@@ -179,6 +179,8 @@ var TimeoutID = "";
 let videos = videosJson["Master"];
 var video = {};
 let currentVideoIndex = 0;
+let islive=0;
+let oldlive=1;
 var currentLiveVideoId = ""
 
 var tag = document.createElement("script");
@@ -360,13 +362,24 @@ async function liveVideoCheck() {
             console.log("Live video is playing Now -------------")
             player.stopVideo();
             player.loadVideoById(JSON.parse(res).data.video_id);
-
+            islive = 1;
+            oldlive = 0;
             currentLiveVideoId = JSON.parse(res).data.video_id
-
         }
-    });
+        else {
+            if(islive==1 && oldlive==0){
 
+                oldlive=1;
+                player.stopVideo();
+                currentVideoIndex = currentVideoIndex + 1;
+                player.loadVideoById(video.id);
+
+            }
+        }
+    })
 }
+
+
 
 var checkLiveVideo = async ( callback ) => {
     
