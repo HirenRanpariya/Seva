@@ -13,7 +13,50 @@
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Player</title>
+        <style>
+            :root{
+                --color: rgb(194, 97, 97);
+                --bg: #eee;
+                --border: rgba(255,255,255,0.2);
+            }
+            body {                
+                margin: 0;
+                padding: 0;
+                display:flex;
+                min-height:100vh;
+                background: linear-gradient(135deg, #7c1599 0%, var(--color) 48%, var(--bg) 100%);
+                background-size:cover;
+                align-items: center;
+                justify-content: center;
+                font-family: Calibri, Candara, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-weight: 600;
+                font-size: 1.6rem;
+                overflow: hidden;
+                background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+                background-size: 400% 400%;
+                animation: gradient 15s ease infinite;
+                height: 100vh;
+            }
+            iframe{
+                overflow: hidden;
+                border: 10px solid var(--border);
+                box-shadow: 0 0 2rem var(--border);
+                position: relative;
+                font-size: 0;
+            }
 
+            @keyframes gradient {
+                0% {
+                    background-position: 0% 50%;
+                }
+                50% {
+                    background-position: 100% 50%;
+                }
+                100% {
+                    background-position: 0% 50%;
+                }
+            }
+        </style>
     </head>
     <body>
         <div id="player"></div>
