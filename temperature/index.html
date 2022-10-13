@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    html {
+      background-color: rgb(46, 22, 22);
+      font-family: Arial;
+      display: inline-block;
+      margin: 0px auto;
+      text-align: center;
+      color: white;
+    }
+
+    h2 {
+      font-size: 3.0rem;
+    }
+
+    p {
+      font-size: 3.0rem;
+    }
+
+    .units {
+      font-size: 1.2rem;
+    }
+
+    .dht-labels {
+      font-size: 1.5rem;
+      vertical-align: middle;
+      padding-bottom: 15px;
+    }
+
+    .card {
+      background-color: rgb(199, 185, 64);
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 30px
+    }
+
+    .switch input {
+      display: none
+    }
+
+    .slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      border-radius: 34px
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 5px;
+      bottom: 5px;
+      background-color: #fff;
+      -webkit-transition: .4s;
+      transition: .4s;
+      border-radius: 68px
+    }
+
+    input:checked+.slider {
+      background-color: #2196F3
+    }
+
+    input:checked+.slider:before {
+      -webkit-transform: translateX(20px);
+      -ms-transform: translateX(20px);
+      transform: translateX(20px)
+    }
+  </style>
+</head>
+
+<body>
+  <h2>ESP32 DHT Server</h2>
+  <p>
+    <i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
+    <span class="dht-labels">Temperature</span>
+    <span id="temperature">%TEMPERATURE%</span>
+    <sup class="units">&deg;C</sup>
+  <div class="card">
+    <input type="radio" id="n1luxmode" name="mode" value="1">
+    <label for="n1luxmode">On LUX</label>
+    <input type="radio" id="n1tmrmode" name="mode" value="2">
+    <label for="n1tmrmode">On Timer</label>
+    <input type="radio" id="n1cmode" name="mode" value="3">
+    <label for="n1cmode">On Lux And Timer</label>
+    <input type="radio" id="n1manuelmode" name="mode" value="4">
+    <label for="n1manuelmode">Manuel</label>
+    <input type="radio" id="n1desable" name="mode" value="5">
+    <label for="n1desable">Node 1 Desable</label><br />
+
+
+    <input type="text" name="lux1_start" placeholder="Enter lux start value" />
+    <input type="text" name="lux1_stop" placeholder="Enter lux start value" />
+    <input type="time" name="d1time_start" placeholder="Enter start time eg.14:30" />
+    <input type="time" name="d1time_stop" placeholder="Enter stop time eg.19:30" />
+    <button id="reset1" onClick='reset1()'>Reset</button>
+    <button id="node1" onClick='node1()'>Node1</button>
+    <p id="msg"></p>
+    <!-- <label class="switch"><input id="toggle" type="checkbox"><span class="slider"></span></label> -->
+    <label class="switch"><input id="toggle" type="checkbox" onchange='n1manuale()'><span class="slider"></span></label>
+  </div>
+  </p>
+</body>
+<script>
+  function n1manuale() {
+    console.log("In n1Manuale");
+    var xhttp = new XMLHttpRequest();
+    element = document.getElementById("toggle");
+    if (element.checked) {
+      xhttp.open("GET", "/n1manuel?n1manuel=1", true);
+    } else {
+      xhttp.open("GET", "/n1manuel?n1manuel=0", true);
+    }
+    xhttp.send();
+  }
+  // setInterval(function () {
+  //   var xhttp = new XMLHttpRequest();
+  //   xhttp.onreadystatechange = function () {
+  //     if (this.readyState == 4 && this.status == 200) {
+  //       document.getElementById("temperature").innerHTML = this.responseText;
+  //     }
+  //   };
+  //   xhttp.open("GET", "/lux", true);
+  //   xhttp.send();
+  // }, 1000);
+  function reset1() {
+    console.log("reset clicked");
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("msg").innerHTML = "Reset Successfully";
+      }
+    };
+    xhttp.open("GET", "/reset?id=1", true);
+    xhttp.send();
+  }
+  function node1() {
+    console.log("node1 clicked");
+    var n1mode = [...document.getElementsByName("mode")].find(i => i.checked).value;
+    console.log("radio clicked:" + n1mode);
+    var luxStartTime = document.getElementsByName("lux1_start")[0].value;
+    var luxStoptTime = document.getElementsByName("lux1_stop")[0].value;
+    var d1StartTime = document.getElementsByName("d1time_start")[0].value;
+    var d1StoptTime = document.getElementsByName("d1time_stop")[0].value;
+    console.log(luxStartTime + " " + luxStoptTime + " " + d1StartTime + " " + d1StoptTime);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("msg").innerHTML = "Reset Successfully";
+      }
+    };
+    xhttp.open("GET", "/node1?n1mode=" +n1mode +"luxStartTime=" + luxStartTime + "&luxStoptTime=" + luxStoptTime + "&d1StartTime=" + d1StartTime + "&d1StoptTime=" + d1StoptTime, true);
+    xhttp.send();
+  }
+</script>
+
+</html>

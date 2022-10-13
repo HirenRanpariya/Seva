@@ -119,10 +119,10 @@ var videosJson = {
             id: "2ODdOwrKe2k",
         },
         {
-            time: "8:00",
+            time: "7:15",
             period: "PM",
-            title: "Chestha",
-            id: "KRh7nhhLjpk",
+            title: "Thal",
+            id: "qzyb3I89bS8",
         },
         {
             time: "10:30",
