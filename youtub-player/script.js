@@ -3,19 +3,19 @@ var videosJson = {
         "pYoMiqaAvPY",
         "4WxIuynk6QY",
         "2ODdOwrKe2k",
-        "tdSjnPCO39s",
+        "J9oh1sitWI8",
         "pYoMiqaAvPY",
         "4WxIuynk6QY",
         "2ODdOwrKe2k",
-        "tdSjnPCO39s",
+        "J9oh1sitWI8",
         "pYoMiqaAvPY",
         "4WxIuynk6QY",
         "2ODdOwrKe2k",
-        "tdSjnPCO39s",
+        "J9oh1sitWI8",
         "pYoMiqaAvPY",
         "4WxIuynk6QY",
         "2ODdOwrKe2k",
-        "tdSjnPCO39s",
+        "J9oh1sitWI8",
     ],
 
     Sunday: [
@@ -35,7 +35,7 @@ var videosJson = {
             time: "10:30",
             period: "PM",
             title: "podhaniyu",
-            id: "tdSjnPCO39s",
+            id: "J9oh1sitWI8",
         },
     ],
 
@@ -88,7 +88,7 @@ var videosJson = {
             time: "10:30",
             period: "PM",
             title: "podhaniyu",
-            id: "tdSjnPCO39s",
+            id: "J9oh1sitWI8",
         },
     ],
     Wednesday: [
@@ -108,7 +108,7 @@ var videosJson = {
             time: "10:30",
             period: "PM",
             title: "podhaniyu",
-            id: "tdSjnPCO39s",
+            id: "J9oh1sitWI8",
         },
     ],
     Thursday: [
@@ -128,7 +128,7 @@ var videosJson = {
             time: "10:30",
             period: "PM",
             title: "podhaniyu",
-            id: "tdSjnPCO39s",
+            id: "J9oh1sitWI8",
         },
     ],
     Friday: [
@@ -148,7 +148,7 @@ var videosJson = {
             time: "10:30",
             period: "PM",
             title: "podhaniyu",
-            id: "tdSjnPCO39s",
+            id: "J9oh1sitWI8",
         },
     ],
     Saturday: [
@@ -168,7 +168,7 @@ var videosJson = {
             time: "10:30",
             period: "PM",
             title: "podhaniyu",
-            id: "tdSjnPCO39s",
+            id: "J9oh1sitWI8",
         },
     ],
 };
@@ -179,6 +179,13 @@ var TimeoutID = "";
 let videos = videosJson["Master"];
 var video = {};
 let currentVideoIndex = 0;
+console.log("current video index in local storege -- "+ localStorage.getItem('currentVideoIndex'))
+if(!localStorage.getItem('currentVideoIndex')){
+    localStorage.setItem("currentVideoIndex", 0)
+}
+else{
+    currentVideoIndex =  parseInt( localStorage.getItem('currentVideoIndex') )
+}
 var currentLiveVideoId = ""
 
 var tag = document.createElement("script");
@@ -235,8 +242,12 @@ function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.ENDED) {
         //console.log(event.target); //videoTitle
         currentVideoIndex = currentVideoIndex + 1;
+        
+        localStorage.setItem('currentVideoIndex', currentVideoIndex)
+        
         if (currentVideoIndex == videos.length) {
             currentVideoIndex = 0;
+            localStorage.setItem('currentVideoIndex', currentVideoIndex)
         }
         player.loadVideoById(videos[currentVideoIndex]);
     }
@@ -279,6 +290,7 @@ function TimeTableAlert() {
 
     player.stopVideo();
     currentVideoIndex = currentVideoIndex + 1;
+    localStorage.setItem('currentVideoIndex', currentVideoIndex)
     player.loadVideoById(video.id);
 
     video = getCurrentVideo(videosJson[getDayName()]);
@@ -367,7 +379,7 @@ async function liveVideoCheck() {
         else if( title.includes("Live Swaminarayan TV") && currentLiveVideoId != "Noid" ){
 
                 player.stopVideo();
-                currentVideoIndex = currentVideoIndex + 1;
+                // currentVideoIndex = currentVideoIndex + 1;
                 player.loadVideoById(videos[currentVideoIndex]);
                 currentLiveVideoId = "Noid"
 
