@@ -171,8 +171,9 @@
     var locatioaddress = ("/node1?n1mode=" +n1mode +"luxStartTime=" + luxStartTime + "&luxStoptTime=" + luxStoptTime + "&d1StartTime=" + d1StartTime + "&d1StoptTime=" + d1StoptTime)
     // window.location.replace(window.location.href + locatioaddress);
     
-      let stateObj = 0;
-      window.history.replaceState(stateObj, "Page", locatioaddress);
+    let stateObj = 0;
+    var basurl = window.location.href + locatioaddress;
+    window.history.replaceState(stateObj, "Page", locatioaddress);
     xhttp.send();
   }
     // var locatioaddress = "hello";
