@@ -950,7 +950,8 @@
   <div id="main" class="hide h-100">
     <section class="logo w-100 fc f-center f-justify-center">
       <img src="images/logo/imcomp-logo-large-path.svg" alt="logo goes here" />
-      <span class="mdc-typography--overline" style="margin-top: 1rem; text-align: center; line-height: 1.25rem">Jay Swaminarayan</span>
+      <span class="mdc-typography--overline" style="margin-top: 1rem; text-align: center; line-height: 1.25rem">Spot the
+        differences in an <em>instant!</em></span>
     </section>
     <input type="file" id="image_select_input" multiple accept=".jpg, .jpeg, .png" class="gone" />
 
@@ -960,13 +961,32 @@
         <span class="mdc-button__touch"></span>
         <span class="mdc-button__label">Select 2 Images</span>
       </button>
+      <span>OR</span>
+      <button id="try_samples_btn" class="mdc-button mdc-button--outlined">
+        <span class="mdc-button__ripple" data-mdc-auto-init="MDCRipple"></span>
+        <span class="mdc-button__touch"></span>
+        <span class="mdc-button__label">Try Samples</span>
+      </button>
+      <br />
+      <div style="margin: 2rem auto"></div>
+      <button id="hiw_btn" class="mdc-button mdc-button--touch mdc-button--icon-leading">
+        <span class="mdc-button__ripple" data-mdc-auto-init="MDCRipple"></span>
+        <span class="mdc-button__touch"></span>
+        <i class="material-icons mdc-button__icon" aria-hidden="true">help</i>
+        <span class="mdc-button__label">How it works</span>
+      </button>
     </section>
+    <footer>
+      <span>Developed by
+        <a href="https://robots.ox.ac.uk/~vgg/" rel="noopener noreferrer" target="_blank">VGG, Oxford</a></span>
+    </footer>
   </div>
   <div class="samples w-100 h-100">
     <header class="mdc-top-app-bar mdc-top-app-bar--fixed">
       <div class="mdc-top-app-bar__row">
         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-          <button id="samples_close_btn" class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Close">
+          <button id="samples_close_btn" class="material-icons mdc-top-app-bar__navigation-icon mdc-icon-button"
+            aria-label="Close">
             close
           </button>
           <span class="mdc-top-app-bar__title">Samples</span>
@@ -1162,9 +1182,82 @@
             <span class="mdc-tab__text-label mdc-theme--on-primary mdc-typography--caption">Back</span>
           </span>
         </button>
-        <div class="mdc-tab mdc-tab--stacked" style="visibility: hidden;">
+        <div class="mdc-tab mdc-tab--stacked">
           <span class="mdc-tab__content">
-            <div class="mdc-select mdc-select--filled hide" data-mdc-auto-init="MDCSelect" title="Click to change visualisation mode" id="visualisation_select">
+            <div class="mdc-select mdc-select--filled" data-mdc-auto-init="MDCSelect" title="Click to change transform"
+              id="transform_select">
+              <div class="mdc-select__anchor" role="button" aria-haspopup="listbox" aria-expanded="false"
+                aria-labelledby="selected-text">
+                <span class="mdc-select__ripple"></span>
+                <span id="select-label"
+                  class="mdc-floating-label mdc-floating-label--float-above mdc-theme--on-primary mdc-typography--body1">Transform</span>
+                <span class="mdc-select__selected-text-container">
+                  <span id="selected-text"
+                    class="mdc-select__selected-text mdc-theme--on-primary mdc-typography--button">Affine</span>
+                </span>
+                <span class="mdc-select__dropdown-icon">
+                  <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5" focusable="false">
+                    <polygon class="mdc-select__dropdown-icon-active" stroke="none" fill-rule="evenodd"
+                      points="7 10 12 15 17 10"></polygon>
+                    <polygon class="mdc-select__dropdown-icon-inactive" stroke="none" fill-rule="evenodd"
+                      points="7 15 12 10 17 15"></polygon>
+                  </svg>
+                </span>
+                <span class="mdc-line-ripple"></span>
+              </div>
+              <div class="mdc-select__menu mdc-menu mdc-menu-surface mdc-menu-surface--fullwidth">
+                <ul class="mdc-deprecated-list" role="listbox" aria-label="Transform picker listbox">
+                  <!--li
+                      class="mdc-deprecated-list-item"
+                      aria-selected="false"
+                      data-value="identity"
+                      role="option"
+                    >
+                      <span class="mdc-deprecated-list-item__ripple"></span>
+                      <span
+                        class="mdc-deprecated-list-item__text mdc-typography--body1"
+                      >
+                        Identity
+                      </span>
+                    </li>
+                    <li
+                      class="mdc-deprecated-list-item"
+                      aria-selected="false"
+                      data-value="similarity"
+                      role="option"
+                    >
+                      <span class="mdc-deprecated-list-item__ripple"></span>
+                      <span
+                        class="mdc-deprecated-list-item__text mdc-typography--body1"
+                      >
+                        Similarity
+                      </span>
+                    </li-->
+                  <li class="mdc-deprecated-list-item mdc-deprecated-list-item--selected" aria-selected="true"
+                    data-value="affine" role="option">
+                    <span class="mdc-deprecated-list-item__ripple"></span>
+                    <span class="mdc-deprecated-list-item__text mdc-typography--body1">
+                      Affine
+                    </span>
+                  </li>
+                  <li class="mdc-deprecated-list-item" aria-selected="false" data-value="perspective" role="option">
+                    <span class="mdc-deprecated-list-item__ripple"></span>
+                    <span class="mdc-deprecated-list-item__text mdc-typography--body1">
+                      Perspective
+                    </span>
+                  </li>
+                  <li class="mdc-deprecated-list-item mdc-deprecated-list-item" aria-selected="false" data-value="tps"
+                    role="option">
+                    <span class="mdc-deprecated-list-item__ripple"></span>
+                    <span class="mdc-deprecated-list-item__text mdc-typography--body1">
+                      Thin Plate Spline
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="mdc-select mdc-select--filled hide" data-mdc-auto-init="MDCSelect"
+              title="Click to change visualisation mode" id="visualisation_select">
               <div class="mdc-select__anchor" role="button" aria-haspopup="listbox" aria-expanded="false"
                 aria-labelledby="selected-text">
                 <span class="mdc-select__ripple"></span>
@@ -1172,7 +1265,7 @@
                   class="mdc-floating-label mdc-floating-label--float-above mdc-theme--on-primary mdc-typography--body1">Visualisation</span>
                 <span class="mdc-select__selected-text-container">
                   <span id="selected-text"
-                    class="mdc-select__selected-text mdc-theme--on-primary mdc-typography--button">Difference</span>
+                    class="mdc-select__selected-text mdc-theme--on-primary mdc-typography--button">Toggle</span>
                 </span>
                 <span class="mdc-select__dropdown-icon">
                   <svg class="mdc-select__dropdown-icon-graphic" viewBox="7 10 10 5" focusable="false">
@@ -1198,6 +1291,44 @@
           </span>
         </div>
 
+        <button id="more" class="mdc-tab mdc-tab--stacked mdc-menu-surface--anchor">
+          <span class="mdc-tab__content">
+            <span class="mdc-tab__icon material-icons mdc-typography--caption mdc-theme--on-primary"
+              aria-hidden="true">more_vert</span>
+            <span class="mdc-tab__text-label mdc-theme--on-primary mdc-typography--caption">More</span>
+          </span>
+          <div class="mdc-menu mdc-menu-surface" id="more_menu" data-mdc-auto-init="MDCMenu">
+            <ul class="mdc-deprecated-list" role="menu" aria-hidden="true" aria-orientation="vertical" tabindex="-1">
+              <li class="mdc-deprecated-list-item mdc-deprecated-list-item--disabled" role="menuitem"
+                data-name="export_aligned_images">
+                <span class="mdc-deprecated-list-item__ripple"></span>
+                <span class="mdc-deprecated-list-item__graphic mdc-menu__selection-group-icon material-icons"
+                  aria-hidden="true">collections</span>
+                <span class="mdc-deprecated-list-item__text">Export Aligned Images</span>
+              </li>
+              <li class="mdc-deprecated-list-item mdc-deprecated-list-item--disabled" role="menuitem"
+                data-name="export_toggle">
+                <span class="mdc-deprecated-list-item__ripple"></span>
+                <span class="mdc-deprecated-list-item__graphic mdc-menu__selection-group-icon material-icons"
+                  aria-hidden="true">gif</span>
+                <span class="mdc-deprecated-list-item__text">Export Toggle View</span>
+              </li>
+              <li class="mdc-list-divider" role="separator"></li>
+              <li class="mdc-deprecated-list-item" role="menuitem" data-name="licenses">
+                <span class="mdc-deprecated-list-item__ripple"></span>
+                <span class="mdc-deprecated-list-item__graphic mdc-menu__selection-group-icon material-icons"
+                  aria-hidden="true">copyright</span>
+                <span class="mdc-deprecated-list-item__text">Licenses</span>
+              </li>
+              <li class="mdc-deprecated-list-item" role="menuitem" data-name="about">
+                <span class="mdc-deprecated-list-item__ripple"></span>
+                <span class="mdc-deprecated-list-item__graphic mdc-menu__selection-group-icon material-icons"
+                  aria-hidden="true">info</span>
+                <span class="mdc-deprecated-list-item__text">About</span>
+              </li>
+            </ul>
+          </div>
+        </button>
       </div>
     </footer>
   </div>
