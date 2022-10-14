@@ -1054,7 +1054,7 @@
       </div>
 
       <div id="action">
-        <div id="toggle" class="mdc-tab-bar mdc-elevation--z4">
+        <div id="toggle" class="hide mdc-tab-bar mdc-elevation--z4">
           <div class="mdc-tab-scroller">
             <div class="mdc-tab-scroller__scroll-area">
               <div class="mdc-tab-scroller__scroll-content">
@@ -1077,63 +1077,13 @@
             </div>
           </div>
         </div>
-        <div id="slide" class="fr f-auto hide">
-          <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
-            <div class="mdc-radio mdc-radio--touch" data-mdc-auto-init="MDCRadio">
-              <input class="mdc-radio__native-control" type="radio" id="radio-horizontal" name="radio-slider"
-                value="horizontal" checked />
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-              <div class="mdc-radio__ripple"></div>
-            </div>
-            <label for="radio-horizontal">Horizontal</label>
-          </div>
-          <div class="mdc-form-field" data-mdc-auto-init="MDCFormField">
-            <div class="mdc-radio mdc-radio--touch" data-mdc-auto-init="MDCRadio">
-              <input class="mdc-radio__native-control" type="radio" id="radio-vertical" name="radio-slider"
-                value="vertical" />
-              <div class="mdc-radio__background">
-                <div class="mdc-radio__outer-circle"></div>
-                <div class="mdc-radio__inner-circle"></div>
-              </div>
-              <div class="mdc-radio__ripple"></div>
-            </div>
-            <label for="radio-vertical">Vertical</label>
-          </div>
-        </div>
-        <div id="diff" class="hide">
+        <div id="diff" class="">
           <button class="mdc-button mdc-button--touch mdc-button--icon-leading mdc-button--outlined">
             <span class="mdc-button__ripple" data-mdc-auto-init="MDCRipple"></span>
             <span class="mdc-button__touch"></span>
             <i class="material-icons mdc-button__icon" aria-hidden="true">download</i>
             <span class="mdc-button__label">Download</span>
           </button>
-        </div>
-        <div id="hover" class="hide fc f-center">
-          <span class="mdc-typography--subtitle1">Showing image: <span id="hover-image">1</span></span>
-          <span class="text-center mdc-typography--caption mdc-theme--text-hint-on-background">
-            <em>Move finger / mouse over the result to toggle manually between
-              the images.</em>
-          </span>
-        </div>
-        <div id="overlay" class="fr f-center hide">
-          <span><img src="images/logo/image-compare-1.svg" alt="1" title="Image 1" /></span>
-          <div class="mdc-slider" data-mdc-auto-init="MDCSlider">
-            <input class="mdc-slider__input" type="range" min="0" max="100" value="50" name="overlay"
-              aria-label="Image overlay slider" />
-            <div class="mdc-slider__track">
-              <div class="mdc-slider__track--inactive"></div>
-              <div class="mdc-slider__track--active">
-                <div class="mdc-slider__track--active_fill"></div>
-              </div>
-            </div>
-            <div class="mdc-slider__thumb">
-              <div class="mdc-slider__thumb-knob"></div>
-            </div>
-          </div>
-          <span><img src="images/logo/image-compare-2.svg" alt="2" title="Image 2" /></span>
         </div>
       </div>
       <button id="compare" class="mdc-button mdc-button--raised">

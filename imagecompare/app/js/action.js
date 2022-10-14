@@ -20,7 +20,7 @@ class Action {
         this.result = result;
 
         // TODO: Infer from document or set the document
-        this._MODE = 'toggle';
+        this._MODE = 'diff';
         this._TOGGLE_SPEED = 2;
         this._OVERLAY = 0.5;
         this._SLIDE = 0.5;
@@ -151,8 +151,8 @@ class Action {
     }
 
     _draw() {
-        if (this.MODE !== 'toggle') {
-            this.result.toggle_images(0);
+        if (this.MODE !== 'diff') {
+            this.result.draw_diff_image(0);
         }
 
         switch(this.MODE){
@@ -191,12 +191,12 @@ class Action {
     }
     reset () {
         // Reset state
-        this._MODE = 'toggle';
+        this._MODE = 'diff';
         this._TOGGLE_SPEED = 2;
         this._OVERLAY = 0.5;
         this._SLIDE = 0.5;
         this._HORIZONTAL = true;
-        this.result.toggle_images(0);
+        this.result.draw_diff_image(0);
 
         // Hide all
         Object.values(this.el).forEach((_el) => {
@@ -204,8 +204,8 @@ class Action {
         });
 
         // Reset toggle ui
-        const active_btn = this.el['toggle'].querySelector('button.mdc-tab.active');
-        const clicked_btn = this.el['toggle'].querySelector('button.mdc-tab[data-speed="2"]');
+        const active_btn = this.el['diff'].querySelector('button.mdc-tab.active');
+        const clicked_btn = this.el['diff'].querySelector('button.mdc-tab[data-speed="2"]');
         if (active_btn !== clicked_btn) {
             this.reset_toggle_ui(clicked_btn, active_btn);
         }
