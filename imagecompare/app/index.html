@@ -592,7 +592,7 @@
 
     @media screen and (min-height: 512px) {
       #compare_container {
-        grid-template-rows: min(128px, max(20vh, 64px)) minmax(0, 1fr) auto;
+        /* grid-template-rows: min(128px, max(20vh, 64px)) minmax(0, 1fr) auto; */
       }
 
       #compare_container>.horizontal-image-list {
@@ -601,6 +601,21 @@
     }
     .noview{
       display: none !important;
+    }
+    #back{
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
+        background: #000;
+        border-radius: 50px;
+        width: 90px;
+        height: 90px;
+    }
+    #Visualisation {
+      position: fixed;
+      bottom: -18px;
+      left: -1.5%;
     }
   </style>
 
@@ -1020,7 +1035,7 @@
         </li>
       </ul>
 
-      <ul class="mdc-image-list horizontal-image-list fr f-justify-center f-stretch hide">
+      <ul class="mdc-image-list horizontal-image-list fr f-justify-center f-stretch noview">
         <li class="mdc-image-list__item fc f-center f-justify-center mw-100">
           <img class="mdc-image-list__image" src="images/logo/imcomp-logo-large-path.svg" />
         </li>
@@ -1147,7 +1162,7 @@
             <span class="mdc-tab__text-label mdc-theme--on-primary mdc-typography--caption">Back</span>
           </span>
         </button>
-        <div class="mdc-tab mdc-tab--stacked">
+        <div id="Visualisation" class="mdc-tab mdc-tab--stacked">
           <span class="mdc-tab__content">
             <div class="mdc-select mdc-select--filled hide" data-mdc-auto-init="MDCSelect" title="Click to change transform"
               id="transform_select">
