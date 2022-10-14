@@ -20,7 +20,7 @@ class Action {
         this.result = result;
 
         // TODO: Infer from document or set the document
-        this._MODE = 'toggle';
+        this._MODE = 'diff';
         this._TOGGLE_SPEED = 2;
         this._OVERLAY = 0.5;
         this._SLIDE = 0.5;
@@ -29,8 +29,6 @@ class Action {
 
         this.download_el = document.createElement('a');
 
-        this.el['toggle'].onclick = this.handle_toggle.bind(this);
-        this.el['slide'].onchange = this.handle_slide.bind(this);
         this.el['diff'].onclick = this.handle_diff.bind(this);
 
         this.hover_text = document.getElementById('hover-image');
