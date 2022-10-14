@@ -149,8 +149,8 @@ class Action {
     }
 
     _draw() {
-        if (this.MODE !== 'toggle') {
-            this.result.toggle_images(0);
+        if (this.MODE !== 'diff') {
+            this.result.draw_diff_image();
         }
 
         switch(this.MODE){
