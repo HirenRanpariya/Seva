@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    function ChangeUrl(page, url) {
+        if (typeof (history.pushState) != "undefined") {
+            var obj = { Page: page, Url: url };
+            history.pushState(obj, obj.Page, obj.Url);
+        } else {
+            alert("Browser does not support HTML5.");
+        }
+    }
+    $(function () {
+        $("#button1").click(function () {
+            ChangeUrl('Page1', 'Page1.htm');
+        });
+        $("#button2").click(function () {
+            ChangeUrl('Page2', 'Page2.htm');
+        });
+        $("#button3").click(function () {
+            ChangeUrl('Page3', 'Page3.htm');
+        });
+    });
+</script>
+<input type="button" value="Page1" id="button1" />
+<input type="button" value="Page2" id="button2" />
+<input type="button" value="Page3" id="button3" />
+</body>
+</html>

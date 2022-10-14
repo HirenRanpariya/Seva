@@ -109,6 +109,10 @@
     <input type="time" name="d1time_stop" placeholder="Enter stop time eg.19:30" />
     <button id="reset1" onClick='reset1()'>Reset</button>
     <button id="node1" onClick='node1()'>Node1</button>
+    
+    <button onclick="modifyState()">
+        Modify history state
+    </button>
     <p id="msg"></p>
     <!-- <label class="switch"><input id="toggle" type="checkbox"><span class="slider"></span></label> -->
     <label class="switch"><input id="toggle" type="checkbox" onchange='n1manuale()'><span class="slider"></span></label>
@@ -165,10 +169,15 @@
     };
     // xhttp.open("GET", "/node1?n1mode=" +n1mode +"luxStartTime=" + luxStartTime + "&luxStoptTime=" + luxStoptTime + "&d1StartTime=" + d1StartTime + "&d1StoptTime=" + d1StoptTime, true);
     var locatioaddress = ("/node1?n1mode=" +n1mode +"luxStartTime=" + luxStartTime + "&luxStoptTime=" + luxStoptTime + "&d1StartTime=" + d1StartTime + "&d1StoptTime=" + d1StoptTime)
-    window.location.replace(window.location.href + locatioaddress);
+    // window.location.replace(window.location.href + locatioaddress);
     xhttp.send();
   }
-  
+    var locatioaddress = "hello";
+    console.log(locatioaddress);
+    function modifyState() {
+    let stateObj = { id: "100" };
+    window.history.replaceState(stateObj, "Page", locatioaddress);
+  }
 </script>
 </body>
 
