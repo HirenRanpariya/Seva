@@ -6,7 +6,7 @@ var timeoutVideoIDRaw = "";
 var timeoutVideoIDArr = []
 var subtractMilliSecondsValue = "";
 
-var ifArr = false;
+setInterval(liveVideoCheck, 10000);
 
 var video = {};
 
