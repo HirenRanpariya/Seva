@@ -1,191 +1,15 @@
-var videosJson = {
-    Master: [
-        "pYoMiqaAvPY",
-        "4WxIuynk6QY",
-        "2ODdOwrKe2k",
-        "J9oh1sitWI8",
-        "pYoMiqaAvPY",
-        "4WxIuynk6QY",
-        "2ODdOwrKe2k",
-        "J9oh1sitWI8",
-        "pYoMiqaAvPY",
-        "4WxIuynk6QY",
-        "2ODdOwrKe2k",
-        "J9oh1sitWI8",
-        "pYoMiqaAvPY",
-        "4WxIuynk6QY",
-        "2ODdOwrKe2k",
-        "J9oh1sitWI8",
-    ],
+// setInterval(liveVideoCheck, 120000);
+setInterval(liveVideoCheck, 12000000);
 
-    Sunday: [
-        {
-            time: "11:00",
-            period: "AM",
-            title: "afterNoonMansi",
-            id: "2ODdOwrKe2k",
-        },
-        {
-            time: "8:00",
-            period: "PM",
-            title: "Chestha",
-            id: "KRh7nhhLjpk",
-        },
-        {
-            time: "10:30",
-            period: "PM",
-            title: "podhaniyu",
-            id: "J9oh1sitWI8",
-        },
-    ],
+var timeoutVideoID = "";
+var timeoutVideoIDRaw = "";
+var timeoutVideoIDArr = []
+var subtractMilliSecondsValue = "";
 
-    Monday: [
-        {
-            time: "11:00",
-            period: "AM",
-            title: "afterNoonMansi",
-            id: "2ODdOwrKe2k",
-        },
-        {
-            time: "5:59",
-            period: "PM",
-            title: "Chestha",
-            id: "DV_YrGlRscg",
-        },
-        {
-            time: "6:01",
-            period: "PM",
-            title: "podhaniyu",
-            id: "2ODdOwrKe2k",
-        },
-        {
-            time: "6:02",
-            period: "PM",
-            title: "podhaniyu",
-            id: "4WxIuynk6QY",
-        },
-        {
-            time: "6:04",
-            period: "PM",
-            title: "podhaniyu",
-            id: "pYoMiqaAvPY",
-        },
-    ],
-    Tuesday: [
-        {
-            time: "11:00",
-            period: "AM",
-            title: "afterNoonMansi",
-            id: "2ODdOwrKe2k",
-        },
-        {
-            time: "8:00",
-            period: "PM",
-            title: "Chestha",
-            id: "KRh7nhhLjpk",
-        },
-        {
-            time: "10:30",
-            period: "PM",
-            title: "podhaniyu",
-            id: "J9oh1sitWI8",
-        },
-    ],
-    Wednesday: [
-        {
-            time: "11:00",
-            period: "AM",
-            title: "afterNoonMansi",
-            id: "2ODdOwrKe2k",
-        },
-        {
-            time: "8:00",
-            period: "PM",
-            title: "Chestha",
-            id: "KRh7nhhLjpk",
-        },
-        {
-            time: "10:30",
-            period: "PM",
-            title: "podhaniyu",
-            id: "J9oh1sitWI8",
-        },
-    ],
-    Thursday: [
-        {
-            time: "11:00",
-            period: "AM",
-            title: "afterNoonMansi",
-            id: "2ODdOwrKe2k",
-        },
-        {
-            time: "7:15",
-            period: "PM",
-            title: "Thal",
-            id: "qzyb3I89bS8",
-        },
-        {
-            time: "10:30",
-            period: "PM",
-            title: "podhaniyu",
-            id: "J9oh1sitWI8",
-        },
-    ],
-    Friday: [
-        {
-            time: "11:00",
-            period: "AM",
-            title: "afterNoonMansi",
-            id: "2ODdOwrKe2k",
-        },
-        {
-            time: "8:00",
-            period: "PM",
-            title: "Chestha",
-            id: "KRh7nhhLjpk",
-        },
-        {
-            time: "10:30",
-            period: "PM",
-            title: "podhaniyu",
-            id: "J9oh1sitWI8",
-        },
-    ],
-    Saturday: [
-        {
-            time: "11:00",
-            period: "AM",
-            title: "afterNoonMansi",
-            id: "2ODdOwrKe2k",
-        },
-        {
-            time: "8:00",
-            period: "PM",
-            title: "Chestha",
-            id: "KRh7nhhLjpk",
-        },
-        {
-            time: "10:30",
-            period: "PM",
-            title: "podhaniyu",
-            id: "J9oh1sitWI8",
-        },
-    ],
-};
+// setInterval(liveVideoCheck, 10000);
 
-setInterval(liveVideoCheck, 10000);
-
-var TimeoutID = "";
-let videos = videosJson["Master"];
 var video = {};
-let currentVideoIndex = 0;
-console.log("current video index in local storege -- "+ localStorage.getItem('currentVideoIndex'))
-if(!localStorage.getItem('currentVideoIndex')){
-    localStorage.setItem("currentVideoIndex", 0)
-}
-else{
-    currentVideoIndex =  parseInt( localStorage.getItem('currentVideoIndex') )
-}
+
 var currentLiveVideoId = ""
 
 var tag = document.createElement("script");
@@ -194,11 +18,15 @@ var firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 
+let videoData = gsheetMaster("")
+let videoDataRaw = "";
+let videoDataArr = [];
+
 function onYouTubeIframeAPIReady() {
     player = new YT.Player("player", {
         height: "390",
         width: "640",
-        videoId: videos[currentVideoIndex],
+        videoId: "TxBSVqof-7o" ,
         playerVars: {
             autoplay: 1,
             mute: 0,
@@ -213,149 +41,105 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-// 4. The API will call this function when the video player is ready.
-function onPlayerReady(event) {
-    event.target.playVideo();
+// The API will call this function when the video player is ready. ----- on start or page refresh  
+async function onPlayerReady(event) {
 
+    event.target.playVideo();
+    
+    // Check for Live video if any ..
     liveVideoCheck()
 
-    video = getCurrentVideo(videosJson[getDayName()]);
-    console.log("video current function " + video);
-    let subtractMilliSecondsValue = -1;
-    if (video) {
-        subtractMilliSecondsValue = getTimeMiliseconds(video);
-    }
+    // API call to get time in milisecond and video id to play next timed video ----------------------------------------------------
+    await gsheetSubMaster()
 
-    if (subtractMilliSecondsValue > 0) {
-        setTimeout(TimeTableAlert, subtractMilliSecondsValue);
-    }
+    // console.log(event.target.getVideoData().video_id);
+    // console.log(event.target.getVideoData().title);
 
-    // let length = player.getDuration()
-    // console.log("video length in seconds --- "+ length)
-
-    // console.log("inside onPlayerReady");
-
-    console.log(event.target.getVideoData().video_id);
-    console.log(event.target.getVideoData().title);
 }
-function onPlayerStateChange(event) {
+
+async function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.ENDED) {
-        //console.log(event.target); //videoTitle
-        currentVideoIndex = currentVideoIndex + 1;
-        
-        localStorage.setItem('currentVideoIndex', currentVideoIndex)
-        
-        if (currentVideoIndex == videos.length) {
-            currentVideoIndex = 0;
-            localStorage.setItem('currentVideoIndex', currentVideoIndex)
+
+        // API call for master with old ID passed and response will be passed below -----------------------------------?? 
+
+        console.log("Player finction after End video ----- ")
+
+        console.log( "timeout video data raw -- " + timeoutVideoIDRaw)
+        console.log( "timeout video data array -- " + timeoutVideoIDArr)
+        // console.log( "timeout video data -- " + timeoutVideoID)
+        console.log( "timeout video data array length -- " + timeoutVideoIDArr.length)
+
+
+        console.log( "video data raw -- " + videoDataRaw)
+        console.log( "video data array -- " + videoDataArr)
+        console.log( "video data -- " + videoData)
+        console.log( "video data array length -- " + videoDataArr.length)
+
+        if (timeoutVideoIDArr.length > 0 ){
+            
+            timeoutVideoID = timeoutVideoIDArr.shift().trim()
+            player.loadVideoById( timeoutVideoID );
+            
         }
-        player.loadVideoById(videos[currentVideoIndex]);
+        else if(videoDataArr.length > 0 ){
+
+            let videoPlay = videoDataArr.shift().trim()
+            player.loadVideoById( videoPlay );
+        
+        }
+        else{
+
+            await gsheetMaster( videoDataRaw )
+            console.log("next video start after current video end  -- "+ videoData)
+            player.loadVideoById( videoData );
+
+        }
+
     }
     if (event.data == YT.PlayerState.PLAYING) {
+        
         var videoId = player.getVideoData()["video_id"];
-        console.log(videoId);
+        console.log("currently Playing videoId --- " + videoId);
 
-        // console.log("Before Index:"+currentVideoIndex);
-        //     if(currentVideoIndex == (videos.length-1))
-        //      currentVideoIndex=0;
-        //     else
-
-        //    console.log("Current Index:"+currentVideoIndex);
-        // 	 var url = event.target.getVideoUrl();
-
-        // 	 var match = url.match(/[?&]v=([^&]+)/);
-
-        // 	 var videoId = match[1];
-        // 	 console.log(videoId);
     }
     if (event.data == YT.PlayerState.CUED) {
+
+        // var videoId = player.getVideoData()["video_id"];
+        // console.log(videoId);
+
     }
 }
 function stopVideo() {
     player.stopVideo();
 }
 
-function getDayName() {
-    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const d = new Date();
-    let day = weekday[d.getDay()];
-    // console.log(day);
-    return day;
-}
-
-function TimeTableAlert() {
-    console.log("Inside Time Table Alert ");
-    // video = getCurrentVideo( videosJson[ getDayName() ] )
-    console.log(video);
+async function TimeTableAlert() {
 
     player.stopVideo();
-    currentVideoIndex = currentVideoIndex + 1;
-    localStorage.setItem('currentVideoIndex', currentVideoIndex)
-    player.loadVideoById(video.id);
+    
+    console.log("Inside Time Table Alert ");
+    console.log( "timeout video data raw -- " + timeoutVideoIDRaw)
+    console.log( "timeout video data array -- " + timeoutVideoIDArr)
+    // console.log( "timeout video data -- " + timeoutVideoID)
+    console.log( "timeout video data array length -- " + timeoutVideoIDArr.length)
 
-    video = getCurrentVideo(videosJson[getDayName()]);
-    console.log(video);
 
-    let subtractMilliSecondsValue = -1;
-    if (video) {
-        subtractMilliSecondsValue = getTimeMiliseconds(video);
+    if (timeoutVideoIDArr.length > 0 ){
+        
+        timeoutVideoID = timeoutVideoIDArr.shift().trim()
+        player.loadVideoById( timeoutVideoID );
+        
     }
-
-    if (subtractMilliSecondsValue > 0) {
-        setTimeout(TimeTableAlert, subtractMilliSecondsValue);
+    else{
+        
+        player.loadVideoById( timeoutVideoID );
+        await gsheetSubMaster( )
     }
+    // API call to get time in milisecond and video id to play  ----------------------------------------------------
+ 
+    
 }
 
-function getCurrentVideo(videoData) {
-    console.log(videoData);
-    let video = [];
-    videoData.forEach((element) => {
-        if (compareTime(element)) {
-            video.push(element);
-        }
-    });
-    console.log(video);
-    return video[0];
-}
-
-function compareTime(element) {
-    let time = element.time.split(":");
-    let hour = parseInt(time[0]);
-    let minute = parseInt(time[1]);
-    if (element.period == "PM") {
-        hour = parseInt(time[0]) + 12;
-    }
-
-    var current = new Date();
-    let currentHour = current.getHours();
-    let currentMinute = current.getMinutes();
-
-    console.log(hour, minute);
-    console.log(currentHour, currentMinute);
-
-    if (hour > currentHour || hour == currentHour) {
-        if ((hour == currentHour && currentMinute > minute) || currentMinute == minute) {
-            console.log(false);
-            return false;
-        } else {
-            console.log(true);
-            return true;
-        }
-    } else {
-        console.log(false);
-        return false;
-    }
-}
-
-function getTimeMiliseconds(videoElement) {
-    console.log(videoElement);
-
-    let date = new Date();
-    let dateString = "" + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear() + " " + videoElement.time + ":00 " + videoElement.period + "";
-    var timeIsBeing936 = new Date(dateString).getTime(),
-        currentTime = new Date().getTime();
-    return timeIsBeing936 - currentTime;
-}
 
 async function liveVideoCheck() {
 
@@ -378,16 +162,16 @@ async function liveVideoCheck() {
         }
         else if( title.includes("Live Swaminarayan TV") && currentLiveVideoId != "Noid" ){
 
-                player.stopVideo();
-                // currentVideoIndex = currentVideoIndex + 1;
-                player.loadVideoById(videos[currentVideoIndex]);
-                currentLiveVideoId = "Noid"
+            player.stopVideo();
+            
+            // youtubeId needs to be updated here check this later ------------------------------------------------------ ??????? 
+
+            player.loadVideoById( videoData.data.youtubeID );          
+            currentLiveVideoId = "Noid"
 
         }
     })
 }
-
-
 
 var checkLiveVideo = async ( callback ) => {
     
@@ -420,8 +204,93 @@ var checkLiveVideo = async ( callback ) => {
             
             // return res
             
-        } catch (err) {
-            console.log(err);
-            return callback(false)
+    }
+    catch (err) {
+        console.log(err);
+        return callback(false)
     }
 }
+
+
+async function gsheetMaster ( youtubeID  ) {
+
+    let body = {
+        "youtubeID": youtubeID, 
+        "Played": 1
+    }
+    var raw = JSON.stringify(body);
+
+    console.log(raw)
+
+    var requestOptions = {
+        method: 'POST',
+        body: raw,
+        redirect: 'follow'
+    };
+
+    await fetch("https://script.google.com/macros/s/AKfycbx5JO_8KyjqMKkOje6I8tnsjSaXYhWPKtNP9n5kmoN9S3CRphonJCE9xR9LuEVzZBuYpA/exec?sheet=dhunMaster&method=master", requestOptions)
+    .then(response => response.text())
+    .then(result => {
+
+        console.log(result)
+        console.log("Master API call -----")
+
+        videoDataRaw = JSON.parse( result ).data.youtubeID
+        videoDataArr = videoDataRaw.split(",")
+        videoData = videoDataArr.shift()
+
+        console.log( "video data raw -- " + videoDataRaw)
+        console.log( "video data array -- " + videoDataArr)
+        console.log( "video data -- " + videoData)
+
+
+        player.stopVideo();            
+        player.loadVideoById( videoData ); 
+
+    })   
+    .catch(error => {
+
+        console.log('error', error)
+
+    });
+
+}
+
+async function gsheetSubMaster ( ) {
+
+    var requestOptions = {
+        method: 'POST',
+        redirect: 'follow'
+    };
+
+    await fetch("https://script.google.com/macros/s/AKfycbx5JO_8KyjqMKkOje6I8tnsjSaXYhWPKtNP9n5kmoN9S3CRphonJCE9xR9LuEVzZBuYpA/exec?sheet=dhunSubMaster&method=subMaster", requestOptions)
+    .then(response => response.text())
+    .then(result => {
+
+        console.log(result)
+        console.log("Sub master API call -----")
+
+        timeoutVideoIDRaw = JSON.parse( result ).data.youtubeID
+        timeoutVideoIDArr = timeoutVideoIDRaw.split(",")
+        timeoutVideoID = ""
+
+        
+        console.log( "timeout video data raw -- " + timeoutVideoIDRaw)
+        console.log( "timeout video data array -- " + timeoutVideoIDArr)
+        console.log( "timeout video data -- " + timeoutVideoID)
+
+        subtractMilliSecondsValue = JSON.parse( result ).data.waitTime ;
+
+        setTimeout(TimeTableAlert, subtractMilliSecondsValue);
+
+    })   
+    .catch(error => {
+
+        console.log('error', error)
+
+    });
+
+}
+
+
+
