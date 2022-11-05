@@ -1,5 +1,5 @@
 // setInterval(liveVideoCheck, 120000);
-setInterval(liveVideoCheck, 12000000);
+// setInterval(liveVideoCheck, 12000000);
 
 var timeoutVideoID = "";
 var timeoutVideoIDRaw = "";
@@ -47,10 +47,10 @@ async function onPlayerReady(event) {
     event.target.playVideo();
     
     // Check for Live video if any ..
-    liveVideoCheck()
+    // liveVideoCheck()
 
     // API call to get time in milisecond and video id to play next timed video ----------------------------------------------------
-    await gsheetSubMaster()
+    // await gsheetSubMaster()
 
     // console.log(event.target.getVideoData().video_id);
     // console.log(event.target.getVideoData().title);
