@@ -1,22 +1,22 @@
 // setInterval(liveVideoCheck, 120000);
 // setInterval(liveVideoCheck, 12000000);
 
-// const clear = (() => {
-//     const defined = v => v !== null && v !== undefined;
-//     const timeout = setInterval(() => {
-//         const ad = [...document.querySelectorAll('.ad-showing')][0];
-//         if (defined(ad)) {
-//             const video = document.querySelector('video');
-//             if (defined(video)) {
-//                 video.currentTime = video.duration;
-//             }
-//         }
-//     }, 500);
-//     return function() {
-//         clearTimeout(timeout);
-//     }
-// })();
-// // clear();
+const clear = (() => {
+    const defined = v => v !== null && v !== undefined;
+    const timeout = setInterval(() => {
+        const ad = [...document.querySelectorAll('.ad-showing')][0];
+        if (defined(ad)) {
+            const video = document.querySelector('video');
+            if (defined(video)) {
+                video.currentTime = video.duration;
+            }
+        }
+    }, 500);
+    return function() {
+        clearTimeout(timeout);
+    }
+})();
+// clear();
 var timeoutVideoID = "";
 var timeoutVideoIDRaw = "";
 var timeoutVideoIDArr = []
