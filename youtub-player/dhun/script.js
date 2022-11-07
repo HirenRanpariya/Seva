@@ -1,6 +1,22 @@
 // setInterval(liveVideoCheck, 120000);
 // setInterval(liveVideoCheck, 12000000);
 
+// const clear = (() => {
+//     const defined = v => v !== null && v !== undefined;
+//     const timeout = setInterval(() => {
+//         const ad = [...document.querySelectorAll('.ad-showing')][0];
+//         if (defined(ad)) {
+//             const video = document.querySelector('video');
+//             if (defined(video)) {
+//                 video.currentTime = video.duration;
+//             }
+//         }
+//     }, 500);
+//     return function() {
+//         clearTimeout(timeout);
+//     }
+// })();
+// // clear();
 var timeoutVideoID = "";
 var timeoutVideoIDRaw = "";
 var timeoutVideoIDArr = []
@@ -24,12 +40,16 @@ let videoDataArr = [];
 
 function onYouTubeIframeAPIReady() {
     player = new YT.Player("player", {
-        height: "390",
-        width: "640",
+        height: '100%',
+        width: '100%',
         videoId: "TxBSVqof-7o" ,
+        host: 'https://www.youtube-nocookie.com',
         playerVars: {
             autoplay: 1,
             mute: 0,
+            // controls: 0,
+            // showinfo: 0,
+            // autohide: 0,
             modestbranding: 1,
             vq: "hd1080",
             playsinline: 1,
