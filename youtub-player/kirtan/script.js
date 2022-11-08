@@ -1,22 +1,22 @@
-// setInterval(liveVideoCheck, 120000);
+ setInterval(liveVideoCheck, 120000);
 // setInterval(liveVideoCheck, 12000000);
 
-const clear = (() => {
-    const defined = v => v !== null && v !== undefined;
-    const timeout = setInterval(() => {
-        const ad = [...document.querySelectorAll('.ad-showing')][0];
-        if (defined(ad)) {
-            const video = document.querySelector('video');
-            if (defined(video)) {
-                video.currentTime = video.duration;
-            }
-        }
-    }, 500);
-    return function() {
-        clearTimeout(timeout);
-    }
-})();
-// clear();
+// const clear = (() => {
+//     const defined = v => v !== null && v !== undefined;
+//     const timeout = setInterval(() => {
+//         const ad = [...document.querySelectorAll('.ad-showing')][0];
+//         if (defined(ad)) {
+//             const video = document.querySelector('video');
+//             if (defined(video)) {
+//                 video.currentTime = video.duration;
+//             }
+//         }
+//     }, 500);
+//     return function() {
+//         clearTimeout(timeout);
+//     }
+// })();
+// // clear();
 var timeoutVideoID = "";
 var timeoutVideoIDRaw = "";
 var timeoutVideoIDArr = []
@@ -42,8 +42,8 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player("player", {
         height: '100%',
         width: '100%',
-        videoId: "TxBSVqof-7o" ,
-        host: 'https://www.youtube-nocookie.com',
+        videoId: "icjawl8nI3U" ,
+        //host: 'https://www.youtube-nocookie.com',
         playerVars: {
             autoplay: 1,
             mute: 0,
@@ -62,7 +62,7 @@ function onYouTubeIframeAPIReady() {
 }
 
 // The API will call this function when the video player is ready. ----- on start or page refresh  
-async function onPlayerReady(event) {z
+async function onPlayerReady(event) {
 
     event.target.playVideo();
     
