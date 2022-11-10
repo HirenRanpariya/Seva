@@ -50,7 +50,7 @@ function onYouTubeIframeAPIReady() {
             // controls: 0,
             // showinfo: 0,
             // autohide: 0,
-            modestbranding: 1,
+            modestbranding: 0,
             vq: "hd1080",
             playsinline: 1,
         },
