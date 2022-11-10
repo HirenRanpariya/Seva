@@ -21,6 +21,7 @@ var timeoutVideoID = "";
 var timeoutVideoIDRaw = "";
 var timeoutVideoIDArr = []
 var subtractMilliSecondsValue = "";
+var timeoutVideoPlay = false
 
 // setInterval(liveVideoCheck, 10000);
 
@@ -88,6 +89,7 @@ async function onPlayerStateChange(event) {
         console.log( "timeout video data array -- " + timeoutVideoIDArr)
         // console.log( "timeout video data -- " + timeoutVideoID)
         console.log( "timeout video data array length -- " + timeoutVideoIDArr.length)
+        console.log("timeout play flag ----- "+ timeoutVideoPlay)
 
 
         console.log( "video data raw -- " + videoDataRaw)
@@ -95,7 +97,7 @@ async function onPlayerStateChange(event) {
         console.log( "video data -- " + videoData)
         console.log( "video data array length -- " + videoDataArr.length)
 
-        if (timeoutVideoIDArr.length > 0 ){
+        if (timeoutVideoIDArr.length > 0 && timeoutVideoPlay == true ){
             
             timeoutVideoID = timeoutVideoIDArr.shift().trim()
             player.loadVideoById( timeoutVideoID );
@@ -143,6 +145,7 @@ async function TimeTableAlert() {
     // console.log( "timeout video data -- " + timeoutVideoID)
     console.log( "timeout video data array length -- " + timeoutVideoIDArr.length)
 
+    timeoutVideoPlay = true
 
     if (timeoutVideoIDArr.length > 0 ){
         
@@ -293,6 +296,7 @@ async function gsheetSubMaster ( ) {
         timeoutVideoIDRaw = JSON.parse( result ).data.youtubeID
         timeoutVideoIDArr = timeoutVideoIDRaw.split(",")
         timeoutVideoID = ""
+        timeoutVideoPlay = false
 
         
         console.log( "timeout video data raw -- " + timeoutVideoIDRaw)
