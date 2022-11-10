@@ -1,4 +1,4 @@
- setInterval(liveVideoCheck, 120000);
+// setInterval(liveVideoCheck, 120000);
 // setInterval(liveVideoCheck, 12000000);
 
 // const clear = (() => {
