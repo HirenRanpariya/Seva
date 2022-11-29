@@ -23,7 +23,10 @@ var timeoutVideoIDArr = []
 var subtractMilliSecondsValue = "";
 var timeoutVideoPlay = false
 
-// setInterval(liveVideoCheck, 10000);
+const intervalTime = 300000
+
+setInterval( gsheetSubMaster , intervalTime );
+setInterval( checkVideoPlaying, 5000 )
 
 var video = {};
 
@@ -35,7 +38,7 @@ var firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 
-let videoData = gsheetMaster("")
+let videoData = gsheetMaster("", "1")
 let videoDataRaw = "";
 let videoDataArr = [];
 
@@ -71,7 +74,7 @@ async function onPlayerReady(event) {
     // liveVideoCheck()
 
     // API call to get time in milisecond and video id to play next timed video ----------------------------------------------------
-     await gsheetSubMaster()
+    await gsheetSubMaster()
 
     // console.log(event.target.getVideoData().video_id);
     // console.log(event.target.getVideoData().title);
@@ -87,10 +90,10 @@ async function onPlayerStateChange(event) {
 
         console.log( "timeout video data raw -- " + timeoutVideoIDRaw)
         console.log( "timeout video data array -- " + timeoutVideoIDArr)
-        // console.log( "timeout video data -- " + timeoutVideoID)
         console.log( "timeout video data array length -- " + timeoutVideoIDArr.length)
         console.log("timeout play flag ----- "+ timeoutVideoPlay)
-
+        console.log( "Wait Time in miliseconds -- " + subtractMilliSecondsValue)
+        
 
         console.log( "video data raw -- " + videoDataRaw)
         console.log( "video data array -- " + videoDataArr)
@@ -111,7 +114,7 @@ async function onPlayerStateChange(event) {
         }
         else{
 
-            await gsheetMaster( videoDataRaw )
+            await gsheetMaster( videoDataRaw , "1" )
             console.log("next video start after current video end  -- "+ videoData)
             player.loadVideoById( videoData );
 
@@ -122,6 +125,10 @@ async function onPlayerStateChange(event) {
         
         var videoId = player.getVideoData()["video_id"];
         console.log("currently Playing videoId --- " + videoId);
+
+                
+        var video_Title = player.getVideoData()["title"];
+        console.log("This is video title ----- " +  video_Title );
 
     }
     if (event.data == YT.PlayerState.CUED) {
@@ -156,7 +163,7 @@ async function TimeTableAlert() {
     else{
         
         player.loadVideoById( timeoutVideoID );
-        await gsheetSubMaster( )
+        // await gsheetSubMaster( )
     }
     // API call to get time in milisecond and video id to play  ----------------------------------------------------
  
@@ -235,11 +242,11 @@ var checkLiveVideo = async ( callback ) => {
 }
 
 
-async function gsheetMaster ( youtubeID  ) {
+async function gsheetMaster ( youtubeID , status ) {
 
     let body = {
         "youtubeID": youtubeID, 
-        "Played": 1
+        "Played": status
     }
     var raw = JSON.stringify(body);
 
@@ -260,7 +267,14 @@ async function gsheetMaster ( youtubeID  ) {
 
         videoDataRaw = JSON.parse( result ).data.youtubeID
         videoDataArr = videoDataRaw.split(",")
-        videoData = videoDataArr.shift()
+        if(videoDataArr == ""){
+
+            videoData = videoDataRaw
+        }
+        else{
+
+            videoData = videoDataArr.shift()
+        }
 
         console.log( "video data raw -- " + videoDataRaw)
         console.log( "video data array -- " + videoDataArr)
@@ -269,6 +283,7 @@ async function gsheetMaster ( youtubeID  ) {
 
         player.stopVideo();            
         player.loadVideoById( videoData ); 
+        player.playVideo();
 
     })   
     .catch(error => {
@@ -305,7 +320,16 @@ async function gsheetSubMaster ( ) {
 
         subtractMilliSecondsValue = JSON.parse( result ).data.waitTime ;
 
-        setTimeout(TimeTableAlert, subtractMilliSecondsValue);
+        console.log("wait time in miliseconds ----- "+ subtractMilliSecondsValue )
+
+
+        if(subtractMilliSecondsValue <= intervalTime){
+            console.log("Timeout set")
+            setTimeout(TimeTableAlert, subtractMilliSecondsValue);
+        }
+        else{
+            console.log("Timeout not set -- wait time is higher")
+        }
 
     })   
     .catch(error => {
@@ -318,3 +342,14 @@ async function gsheetSubMaster ( ) {
 
 
 
+
+async function checkVideoPlaying(){
+
+    var video_Title = player.getVideoData()["title"];
+    // console.log("This is video title inside the check video function " +  video_Title );
+    if(video_Title == ""){
+        console.log("not playing any video  -------- video unavailable")
+        await gsheetMaster( videoDataRaw , "fail" )
+    }
+
+}
