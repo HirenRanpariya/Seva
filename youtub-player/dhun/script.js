@@ -1,32 +1,31 @@
-// setInterval(liveVideoCheck, 120000);
-// setInterval(liveVideoCheck, 12000000);
+// let environment = "Dev";
+let environment = "Prod"
+let ApiUrl = "https://script.google.com/macros/s/AKfycbwuoP_nBP7fV5ol3fdvtuarlwfEj-LEwGmf3nCCeLeTJWgGXUtBqUPGo0BlElHMa2sr/exec";
 
-// const clear = (() => {
-//     const defined = v => v !== null && v !== undefined;
-//     const timeout = setInterval(() => {
-//         const ad = [...document.querySelectorAll('.ad-showing')][0];
-//         if (defined(ad)) {
-//             const video = document.querySelector('video');
-//             if (defined(video)) {
-//                 video.currentTime = video.duration;
-//             }
-//         }
-//     }, 500);
-//     return function() {
-//         clearTimeout(timeout);
-//     }
-// })();
-// // clear();
+if (environment == "Dev") {
+    ApiUrl = "https://script.google.com/macros/s/AKfycbwZtdlGdaJO78exGG6rB5jBmcM9iB_9SP_vKxE98nOI_OsUdEVaixSWSybsFTfi5Cyg3g/exec";
+}
+
+let VideoLength = ""
+var timer = null
+
+
 var timeoutVideoID = "";
 var timeoutVideoIDRaw = "";
-var timeoutVideoIDArr = []
+var timeoutVideoIDArr = [];
 var subtractMilliSecondsValue = "";
+var timeoutVideoPlay = false
 
-// setInterval(liveVideoCheck, 10000);
+const intervalTime = 300000
+
+// setInterval( gsheetSubMaster , intervalTime );
+setInterval( checkVideoPlaying, 5000 )
+// setInterval(liveVideoCheck, 12000000);
+
 
 var video = {};
 
-var currentLiveVideoId = ""
+var currentLiveVideoId = "";
 
 var tag = document.createElement("script");
 tag.src = "https://www.youtube.com/iframe_api";
@@ -34,15 +33,15 @@ var firstScriptTag = document.getElementsByTagName("script")[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 
-let videoData = gsheetMaster("")
+let videoData = gsheetMaster("", "1");
 let videoDataRaw = "";
 let videoDataArr = [];
 
 function onYouTubeIframeAPIReady() {
     player = new YT.Player("player", {
-        height: '100%',
-        width: '100%',
-        videoId: "yHApAxNHCVs" ,
+        height: "100%",
+        width: "100%",
+        videoId: "yHApAxNHCVs",
         //host: 'https://www.youtube-nocookie.com',
         playerVars: {
             autoplay: 1,
@@ -61,11 +60,12 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-// The API will call this function when the video player is ready. ----- on start or page refresh  
+// The API will call this function when the video player is ready. ----- on start or page refresh
 async function onPlayerReady(event) {
-
     event.target.playVideo();
-    
+
+    VideoLength = player.getDuration()
+    console.log("video length in seconds --- "+ VideoLength)
     // Check for Live video if any ..
     // liveVideoCheck()
 
@@ -74,28 +74,28 @@ async function onPlayerReady(event) {
 
     // console.log(event.target.getVideoData().video_id);
     // console.log(event.target.getVideoData().title);
-
 }
 
 async function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.ENDED) {
+        // API call for master with old ID passed and response will be passed below -----------------------------------??
 
-        // API call for master with old ID passed and response will be passed below -----------------------------------?? 
+        timer = null
 
         console.log("Player finction after End video ----- ")
 
         console.log( "timeout video data raw -- " + timeoutVideoIDRaw)
         console.log( "timeout video data array -- " + timeoutVideoIDArr)
-        // console.log( "timeout video data -- " + timeoutVideoID)
         console.log( "timeout video data array length -- " + timeoutVideoIDArr.length)
-
-
+        console.log("timeout play flag ----- "+ timeoutVideoPlay)
+        console.log( "Wait Time in miliseconds -- " + subtractMilliSecondsValue)
+        
         console.log( "video data raw -- " + videoDataRaw)
         console.log( "video data array -- " + videoDataArr)
         console.log( "video data -- " + videoData)
         console.log( "video data array length -- " + videoDataArr.length)
 
-        if (timeoutVideoIDArr.length > 0 ){
+        if (timeoutVideoIDArr.length > 0 && timeoutVideoPlay == true ){
             
             timeoutVideoID = timeoutVideoIDArr.shift().trim()
             player.loadVideoById( timeoutVideoID );
@@ -109,28 +109,69 @@ async function onPlayerStateChange(event) {
         }
         else{
 
-            await gsheetMaster( videoDataRaw )
+            await gsheetMaster( videoDataRaw , "1" )
             console.log("next video start after current video end  -- "+ videoData)
             player.loadVideoById( videoData );
 
         }
-
     }
     if (event.data == YT.PlayerState.PLAYING) {
-        
         var videoId = player.getVideoData()["video_id"];
         console.log("currently Playing videoId --- " + videoId);
 
+        VideoLength = player.getDuration()
+        console.log("video length in seconds --- "+ VideoLength)
+        if(!timer){
+            console.log("Timeout set for 7 second early ----- ")
+            timer = setTimeout( videoEndEarly , (VideoLength-7)*1000  )
+        }
+
     }
     if (event.data == YT.PlayerState.CUED) {
-
         // var videoId = player.getVideoData()["video_id"];
         // console.log(videoId);
-
     }
 }
 function stopVideo() {
     player.stopVideo();
+}
+
+
+async function videoEndEarly(){
+    timer = null
+
+    console.log("Inside Video End Early Function ----- ");
+
+    console.log("timeout video data raw -- " + timeoutVideoIDRaw);
+    console.log("timeout video data array -- " + timeoutVideoIDArr);
+    // console.log( "timeout video data -- " + timeoutVideoID)
+    console.log("timeout video data array length -- " + timeoutVideoIDArr.length);
+
+    console.log("video data raw -- " + videoDataRaw);
+    console.log("video data array -- " + videoDataArr);
+    console.log("video data -- " + videoData);
+    console.log("video data array length -- " + videoDataArr.length);
+
+    if (timeoutVideoIDArr.length > 0) {
+    
+        timeoutVideoID = timeoutVideoIDArr.shift().trim();
+        player.loadVideoById(timeoutVideoID);
+
+    } 
+    else if (videoDataArr.length > 0) {
+    
+        let videoPlay = videoDataArr.shift().trim();
+        player.loadVideoById(videoPlay);
+    
+    } 
+    else {
+    
+        await gsheetMaster(videoDataRaw, "1");
+        console.log("next video start after current video end  -- " + videoData);
+        player.loadVideoById(videoData);
+    
+    }
+    
 }
 
 async function TimeTableAlert() {
@@ -143,6 +184,7 @@ async function TimeTableAlert() {
     // console.log( "timeout video data -- " + timeoutVideoID)
     console.log( "timeout video data array length -- " + timeoutVideoIDArr.length)
 
+    timeoutVideoPlay = true
 
     if (timeoutVideoIDArr.length > 0 ){
         
@@ -153,14 +195,12 @@ async function TimeTableAlert() {
     else{
         
         player.loadVideoById( timeoutVideoID );
-        await gsheetSubMaster( )
+        // await gsheetSubMaster( )
     }
     // API call to get time in milisecond and video id to play  ----------------------------------------------------
  
     
 }
-
-
 async function liveVideoCheck() {
 
     await checkLiveVideo( ( res ) => {
@@ -192,6 +232,7 @@ async function liveVideoCheck() {
         }
     })
 }
+
 
 var checkLiveVideo = async ( callback ) => {
     
@@ -231,12 +272,11 @@ var checkLiveVideo = async ( callback ) => {
     }
 }
 
-
-async function gsheetMaster ( youtubeID  ) {
+async function gsheetMaster ( youtubeID , status ) {
 
     let body = {
         "youtubeID": youtubeID, 
-        "Played": 1
+        "Played": status
     }
     var raw = JSON.stringify(body);
 
@@ -248,7 +288,7 @@ async function gsheetMaster ( youtubeID  ) {
         redirect: 'follow'
     };
 
-    await fetch("https://script.google.com/macros/s/AKfycbwuoP_nBP7fV5ol3fdvtuarlwfEj-LEwGmf3nCCeLeTJWgGXUtBqUPGo0BlElHMa2sr/exec?sheet=dhunMaster&method=master", requestOptions)
+    await fetch( ApiUrl +"?sheet=kirtanMaster&method=master", requestOptions)
     .then(response => response.text())
     .then(result => {
 
@@ -257,7 +297,14 @@ async function gsheetMaster ( youtubeID  ) {
 
         videoDataRaw = JSON.parse( result ).data.youtubeID
         videoDataArr = videoDataRaw.split(",")
-        videoData = videoDataArr.shift()
+        if(videoDataArr == ""){
+
+            videoData = videoDataRaw
+        }
+        else{
+
+            videoData = videoDataArr.shift()
+        }
 
         console.log( "video data raw -- " + videoDataRaw)
         console.log( "video data array -- " + videoDataArr)
@@ -266,6 +313,7 @@ async function gsheetMaster ( youtubeID  ) {
 
         player.stopVideo();            
         player.loadVideoById( videoData ); 
+        player.playVideo();
 
     })   
     .catch(error => {
@@ -276,6 +324,7 @@ async function gsheetMaster ( youtubeID  ) {
 
 }
 
+
 async function gsheetSubMaster ( ) {
 
     var requestOptions = {
@@ -283,7 +332,7 @@ async function gsheetSubMaster ( ) {
         redirect: 'follow'
     };
 
-    await fetch("https://script.google.com/macros/s/AKfycbwuoP_nBP7fV5ol3fdvtuarlwfEj-LEwGmf3nCCeLeTJWgGXUtBqUPGo0BlElHMa2sr/exec?sheet=dhunSubMaster&method=subMaster", requestOptions)
+    await fetch( ApiUrl + "?sheet=kirtanSubMaster&method=subMaster", requestOptions)
     .then(response => response.text())
     .then(result => {
 
@@ -293,6 +342,7 @@ async function gsheetSubMaster ( ) {
         timeoutVideoIDRaw = JSON.parse( result ).data.youtubeID
         timeoutVideoIDArr = timeoutVideoIDRaw.split(",")
         timeoutVideoID = ""
+        timeoutVideoPlay = false
 
         
         console.log( "timeout video data raw -- " + timeoutVideoIDRaw)
@@ -301,7 +351,16 @@ async function gsheetSubMaster ( ) {
 
         subtractMilliSecondsValue = JSON.parse( result ).data.waitTime ;
 
-        setTimeout(TimeTableAlert, subtractMilliSecondsValue);
+        console.log("wait time in miliseconds ----- "+ subtractMilliSecondsValue )
+
+
+        if(subtractMilliSecondsValue <= intervalTime){
+            console.log("Timeout set")
+            setTimeout(TimeTableAlert, subtractMilliSecondsValue);
+        }
+        else{
+            console.log("Timeout not set -- wait time is higher")
+        }
 
     })   
     .catch(error => {
@@ -314,3 +373,13 @@ async function gsheetSubMaster ( ) {
 
 
 
+async function checkVideoPlaying(){
+
+    var video_Title = player.getVideoData()["title"];
+    // console.log("This is video title inside the check video function " +  video_Title );
+    if(video_Title == ""){
+        console.log("not playing any video  -------- video unavailable")
+        await gsheetMaster( videoDataRaw , "fail" )
+    }
+
+}

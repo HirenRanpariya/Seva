@@ -1,22 +1,16 @@
-// setInterval(liveVideoCheck, 120000);
-// setInterval(liveVideoCheck, 12000000);
 
-// const clear = (() => {
-//     const defined = v => v !== null && v !== undefined;
-//     const timeout = setInterval(() => {
-//         const ad = [...document.querySelectorAll('.ad-showing')][0];
-//         if (defined(ad)) {
-//             const video = document.querySelector('video');
-//             if (defined(video)) {
-//                 video.currentTime = video.duration;
-//             }
-//         }
-//     }, 500);
-//     return function() {
-//         clearTimeout(timeout);
-//     }
-// })();
-// // clear();
+// let environment = "Dev";
+let environment = "Prod"
+let ApiUrl = "https://script.google.com/macros/s/AKfycbwuoP_nBP7fV5ol3fdvtuarlwfEj-LEwGmf3nCCeLeTJWgGXUtBqUPGo0BlElHMa2sr/exec";
+
+if (environment == "Dev") {
+    ApiUrl = "https://script.google.com/macros/s/AKfycbwZtdlGdaJO78exGG6rB5jBmcM9iB_9SP_vKxE98nOI_OsUdEVaixSWSybsFTfi5Cyg3g/exec";
+}
+
+let VideoLength = ""
+var timer = null
+
+
 var timeoutVideoID = "";
 var timeoutVideoIDRaw = "";
 var timeoutVideoIDArr = []
@@ -27,6 +21,7 @@ const intervalTime = 300000
 
 setInterval( gsheetSubMaster , intervalTime );
 setInterval( checkVideoPlaying, 5000 )
+// setInterval(liveVideoCheck, 12000000);
 
 var video = {};
 
@@ -83,8 +78,9 @@ async function onPlayerReady(event) {
 
 async function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.ENDED) {
-
         // API call for master with old ID passed and response will be passed below -----------------------------------?? 
+
+        timer = null
 
         console.log("Player finction after End video ----- ")
 
@@ -122,14 +118,18 @@ async function onPlayerStateChange(event) {
 
     }
     if (event.data == YT.PlayerState.PLAYING) {
-        
+
         var videoId = player.getVideoData()["video_id"];
         console.log("currently Playing videoId --- " + videoId);
 
-                
-        var video_Title = player.getVideoData()["title"];
-        console.log("This is video title ----- " +  video_Title );
+        VideoLength = player.getDuration()
+        console.log("video length in seconds --- "+ VideoLength)
+        if(!timer){
+            console.log("Timeout set for 7 second early ----- ")
+            timer = setTimeout( videoEndEarly , (VideoLength-7)*1000  )
+        }
 
+      
     }
     if (event.data == YT.PlayerState.CUED) {
 
@@ -141,6 +141,45 @@ async function onPlayerStateChange(event) {
 function stopVideo() {
     player.stopVideo();
 }
+
+
+async function videoEndEarly(){
+    timer = null
+
+    console.log("Inside Video End Early Function ----- ");
+
+    console.log("timeout video data raw -- " + timeoutVideoIDRaw);
+    console.log("timeout video data array -- " + timeoutVideoIDArr);
+    // console.log( "timeout video data -- " + timeoutVideoID)
+    console.log("timeout video data array length -- " + timeoutVideoIDArr.length);
+
+    console.log("video data raw -- " + videoDataRaw);
+    console.log("video data array -- " + videoDataArr);
+    console.log("video data -- " + videoData);
+    console.log("video data array length -- " + videoDataArr.length);
+
+    if (timeoutVideoIDArr.length > 0) {
+    
+        timeoutVideoID = timeoutVideoIDArr.shift().trim();
+        player.loadVideoById(timeoutVideoID);
+
+    } 
+    else if (videoDataArr.length > 0) {
+    
+        let videoPlay = videoDataArr.shift().trim();
+        player.loadVideoById(videoPlay);
+    
+    } 
+    else {
+    
+        await gsheetMaster(videoDataRaw, "1");
+        console.log("next video start after current video end  -- " + videoData);
+        player.loadVideoById(videoData);
+    
+    }
+    
+}
+
 
 async function TimeTableAlert() {
 
