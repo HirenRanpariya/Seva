@@ -158,20 +158,22 @@ async function videoEndEarly(){
     console.log("video data -- " + videoData);
     console.log("video data array length -- " + videoDataArr.length);
 
-    if (timeoutVideoIDArr.length > 0) {
+    if (timeoutVideoIDArr.length > 0 && timeoutVideoPlay == true ) {
     
         timeoutVideoID = timeoutVideoIDArr.shift().trim();
         player.loadVideoById(timeoutVideoID);
 
     } 
     else if (videoDataArr.length > 0) {
-    
+        
+        timeoutVideoPlay = false
         let videoPlay = videoDataArr.shift().trim();
         player.loadVideoById(videoPlay);
     
     } 
     else {
-    
+        
+        timeoutVideoPlay = false
         await gsheetMaster(videoDataRaw, "1");
         console.log("next video start after current video end  -- " + videoData);
         player.loadVideoById(videoData);
@@ -350,7 +352,7 @@ async function gsheetSubMaster ( ) {
         timeoutVideoIDRaw = JSON.parse( result ).data.youtubeID
         timeoutVideoIDArr = timeoutVideoIDRaw.split(",")
         timeoutVideoID = ""
-        timeoutVideoPlay = false
+        // timeoutVideoPlay = false
 
         
         console.log( "timeout video data raw -- " + timeoutVideoIDRaw)
