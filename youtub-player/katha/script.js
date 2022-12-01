@@ -20,7 +20,7 @@ const intervalTime = 300000
 
 // setInterval( gsheetSubMaster , intervalTime );
 setInterval( checkVideoPlaying, 5000 )
-// setInterval(liveVideoCheck, 12000000);
+setInterval(liveVideoCheck, 12000000);
 
 
 var video = {};
@@ -67,7 +67,7 @@ async function onPlayerReady(event) {
     VideoLength = player.getDuration()
     console.log("video length in seconds --- "+ VideoLength)
     // Check for Live video if any ..
-    // liveVideoCheck()
+    liveVideoCheck()
 
     // API call to get time in milisecond and video id to play next timed video ----------------------------------------------------
     // await gsheetSubMaster()
@@ -290,7 +290,7 @@ async function gsheetMaster ( youtubeID , status ) {
         redirect: 'follow'
     };
 
-    await fetch( ApiUrl +"?sheet=dhunMaster&method=master", requestOptions)
+    await fetch( ApiUrl +"?sheet=kathaMaster&method=master", requestOptions)
     .then(response => response.text())
     .then(result => {
 
@@ -334,7 +334,7 @@ async function gsheetSubMaster ( ) {
         redirect: 'follow'
     };
 
-    await fetch( ApiUrl + "?sheet=dhunSubMaster&method=subMaster", requestOptions)
+    await fetch( ApiUrl + "?sheet=kathaSubMaster&method=subMaster", requestOptions)
     .then(response => response.text())
     .then(result => {
 
