@@ -20,7 +20,7 @@ const intervalTime = 300000
 
 // setInterval( gsheetSubMaster , intervalTime );
 setInterval( checkVideoPlaying, 5000 )
-setInterval(liveVideoCheck, 12000000);
+setInterval(liveVideoCheck, 1200000);
 
 
 var video = {};
@@ -212,9 +212,10 @@ async function liveVideoCheck() {
         let title = JSON.parse(res).data.title
         console.log(title)
         console.log(!title.includes("Live Swaminarayan TV"))
+        console.log(!title.includes("Sandhya Aarti"))
         console.log(currentLiveVideoId != JSON.parse(res).data.video_id)
         console.log(currentLiveVideoId , JSON.parse(res).data.video_id )
-        if( !title.includes("Live Swaminarayan TV") && currentLiveVideoId != JSON.parse(res).data.video_id ){
+        if( !title.includes("Live Swaminarayan TV") && !title.includes("Sandhya Aarti") && currentLiveVideoId != JSON.parse(res).data.video_id ){
 
             console.log("Live video is playing Now -------------")
             player.stopVideo();
@@ -222,7 +223,7 @@ async function liveVideoCheck() {
             currentLiveVideoId = JSON.parse(res).data.video_id
   
         }
-        else if( title.includes("Live Swaminarayan TV") && currentLiveVideoId != "Noid" ){
+        else if( title.includes("Live Swaminarayan TV") && title.includes("Sandhya Aarti") && currentLiveVideoId != "Noid" ){
 
             player.stopVideo();
             
