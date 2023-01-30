@@ -11,7 +11,8 @@ var timer = null
 
 var checkVideoCount = 0
 setInterval( checkVideoPlaying, 5000 )
-setInterval(liveVideoCheck, 1200000);
+setInterval(liveVideoCheck, 120000);  // 2 min
+// setInterval(liveVideoCheck, 1200000);  // 20 min
 
 
 var currentLiveVideoId = "";
@@ -150,9 +151,10 @@ async function liveVideoCheck() {
         let title = JSON.parse(res).data.title
         console.log(title)
         console.log(!title.includes("Live Swaminarayan TV"))
-        console.log(currentLiveVideoId != JSON.parse(res).data.video_id)
-        console.log(currentLiveVideoId , JSON.parse(res).data.video_id )
-        if( !title.includes("Live Swaminarayan TV") && currentLiveVideoId != JSON.parse(res).data.video_id ){
+        console.log( player.getVideoData().video_id != JSON.parse(res).data.video_id )
+        console.log(player.getVideoData().video_id , JSON.parse(res).data.video_id )
+
+        if( !title.includes("Live Swaminarayan TV") && player.getVideoData().video_id != JSON.parse(res).data.video_id ){
 
             console.log("Live video is playing Now -------------")
             player.stopVideo();
@@ -166,7 +168,7 @@ async function liveVideoCheck() {
             
             // youtubeId needs to be updated here check this later ------------------------------------------------------ ??????? 
 
-            // player.loadVideoById( videoData.data.youtubeID );          
+            player.loadVideoById( videoData );          
             currentLiveVideoId = "Noid"
 
         }
