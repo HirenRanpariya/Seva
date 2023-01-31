@@ -1,6 +1,6 @@
-let environment = "Dev";
-// let environment = "Prod"
-let ApiUrl = "https://script.google.com/macros/s/AKfycbwuoP_nBP7fV5ol3fdvtuarlwfEj-LEwGmf3nCCeLeTJWgGXUtBqUPGo0BlElHMa2sr/exec";
+// let environment = "Dev";
+let environment = "Prod"
+let ApiUrl = "https://script.google.com/macros/s/AKfycbx-P28nEvQiP18eIkCPxJJA_veVux_JQ1XqvaOMN-FpTlp6Cd_xnThd_DFTmJ_fH3fG/exec";
 
 if (environment == "Dev") {
     ApiUrl = "https://script.google.com/macros/s/AKfycbxxNn1KiffO9psTj7BFbje7_L6BkWR6x5bw7R55bg3aQWkoUFVWhwD9AOGQb6iWRXAezQ/exec";
