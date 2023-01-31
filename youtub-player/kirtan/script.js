@@ -190,7 +190,8 @@ async function gsheetMaster( youtubeID ) {
     var raw = JSON.stringify(body);
 
     console.log(raw)    
-    timer = null
+    timer = clearTimeout(timer);
+    console.log( "Timer state ----------- " + timer)
 
 
     var requestOptions = {
