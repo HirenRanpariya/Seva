@@ -69,7 +69,9 @@ async function onPlayerStateChange(event) {
 
     if (event.data == YT.PlayerState.ENDED) {
 
-        timer = null
+        timer = clearTimeout(timer);
+        console.log( "Timer state ----------- " + timer)
+
         console.log( "video data raw -- " + videoDataRaw)
         console.log( "video data array -- " + videoDataArr)
         console.log( "video data -- " + videoData)
@@ -95,11 +97,14 @@ async function onPlayerStateChange(event) {
         // this condition will be called on every event change as well as new video playing ---
         var videoId = player.getVideoData()["video_id"];
         console.log("currently Playing videoId --- " + videoId);
+        console.log("is video Live ---- " + player.getVideoData().isLive)
         VideoLength = player.getDuration()
-        console.log("video length in seconds --- "+ VideoLength)
-        if(!timer){
-            console.log("Timeout set for 7 second early ----- ")
+        console.log("video length in seconds -------- "+ VideoLength)
+        console.log("Timer value before ------------- " + timer)
+        if(!timer && !player.getVideoData().isLive  ){
+            console.log("Timeout set for 7 second early ")
             timer = setTimeout( videoEndEarly , (VideoLength-7)*1000  )
+            console.log("Timer value After ---------- " + timer)
         }
 
     }
@@ -113,7 +118,8 @@ async function videoEndEarly(){
     // 7 seconds before the video ends
     // this will act similar to the onPlayerStateChange() function
 
-    timer = null
+    timer = clearTimeout(timer);
+    console.log( "Timer state ----------- " + timer)
 
     console.log("video data raw -- " + videoDataRaw);
     console.log("video data array -- " + videoDataArr);
@@ -155,6 +161,10 @@ async function liveVideoCheck() {
         console.log(player.getVideoData().video_id , JSON.parse(res).data.video_id )
 
         if( !title.includes("Live Swaminarayan TV") && player.getVideoData().video_id != JSON.parse(res).data.video_id ){
+
+            
+            timer = clearTimeout(timer);
+            console.log( "Timer state ----------- " + timer)
 
             console.log("Live video is playing Now -------------")
             player.stopVideo();

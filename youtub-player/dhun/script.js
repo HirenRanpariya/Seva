@@ -7,7 +7,7 @@ if (environment == "Dev") {
 }
 
 let VideoLength = ""
-var timer = null
+let timer = null
 
 var checkVideoCount = 0
 setInterval( checkVideoPlaying, 5000 )
@@ -61,11 +61,12 @@ async function onPlayerStateChange(event) {
 
     if (event.data == YT.PlayerState.ENDED) {
 
-        timer = null
-        console.log( "video data raw -- " + videoDataRaw)
-        console.log( "video data array -- " + videoDataArr)
-        console.log( "video data -- " + videoData)
-        console.log( "video data array length -- " + videoDataArr.length)
+        timer = clearTimeout(timer);
+        console.log( "Timer state ----------- " + timer)
+
+        console.log( "video data raw -------- " + videoDataRaw)
+        console.log( "video data array ------ " + videoDataArr)
+        console.log( "video data ------------ " + videoData)
         
         if(videoDataArr.length > 0 ){
             // Player will play videos till the videoDataArr is empty --- if multiple video id in same cell
@@ -89,9 +90,11 @@ async function onPlayerStateChange(event) {
         console.log("currently Playing videoId --- " + videoId);
         VideoLength = player.getDuration()
         console.log("video length in seconds --- "+ VideoLength)
+        console.log("Timer value before ------ " + timer)
         if(!timer){
-            console.log("Timeout set for 7 second early ----- ")
+            console.log("Timeout set for 7 second early ")
             timer = setTimeout( videoEndEarly , (VideoLength-7)*1000  )
+            console.log("Timer value After ------ " + timer)
         }
 
     }
@@ -105,7 +108,8 @@ async function videoEndEarly(){
     // 7 seconds before the video ends
     // this will act similar to the onPlayerStateChange() function
 
-    timer = null
+    timer = clearTimeout(timer);
+    console.log( "Timer state ----------- " + timer)
 
     console.log("video data raw -- " + videoDataRaw);
     console.log("video data array -- " + videoDataArr);
@@ -120,7 +124,7 @@ async function videoEndEarly(){
     } 
     else {
         
-        console.log("---- gshet call in side video end early ---")
+        console.log("---- gshet call inside video end early ---")
         await gsheetMaster(videoDataRaw);
         console.log("next video start after current video end  -- " + videoData);
         player.loadVideoById(videoData);
