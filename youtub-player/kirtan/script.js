@@ -19,8 +19,8 @@ var timeoutVideoIDArr = []
 var subtractMilliSecondsValue = "";
 var timeoutVideoPlay = false
 
-// const intervalTime = 300000   // 5 min
-const intervalTime = 60000   // 60 sec
+const intervalTime = 300000   // 5 min
+// const intervalTime = 60000   // 60 sec
 setInterval( gsheetSubMaster , intervalTime );
 
 
