@@ -86,7 +86,7 @@ async function onPlayerStateChange(event) {
         else{
 
             console.log("---- player state change video end early ---")
-            await gsheetMaster( videoDataRaw )
+            await gsheetMaster( "" )
             console.log("next video start after current video end  -- "+ videoData)
             player.loadVideoById( videoData );
 
@@ -135,7 +135,7 @@ async function videoEndEarly(){
     else {
     
         console.log("---- gshet call in side video end early ---")
-        await gsheetMaster(videoDataRaw);
+        await gsheetMaster("");
         console.log("next video start after current video end  -- " + videoData);
         player.loadVideoById(videoData);
     
@@ -288,7 +288,7 @@ async function checkVideoPlaying(){
 
         checkVideoCount = 0
         console.log("not playing any video  -------- video unavailable")
-        await gsheetMaster( videoDataRaw )
+        await gsheetMaster( "" )
     
     }
 
