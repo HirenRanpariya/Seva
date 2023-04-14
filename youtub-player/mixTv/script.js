@@ -1,13 +1,13 @@
-// let environment = "Dev";
-let environment = "Prod"
+let environment = "Dev";
+// let environment = "Prod"
 let ApiUrl = "https://script.google.com/macros/s/AKfycbx-P28nEvQiP18eIkCPxJJA_veVux_JQ1XqvaOMN-FpTlp6Cd_xnThd_DFTmJ_fH3fG/exec";
 
 if (environment == "Dev") {
-    ApiUrl = "https://script.google.com/macros/s/AKfycbxxNn1KiffO9psTj7BFbje7_L6BkWR6x5bw7R55bg3aQWkoUFVWhwD9AOGQb6iWRXAezQ/exec";
+    ApiUrl = "https://script.google.com/macros/s/AKfycbzfIblAFKAEOHYiETxw_syYOw33elTgbBQD0_1W-LxHChD7TQwjdVA8XLAvmP95WWXlbg/exec";
 }
 
 let VideoLength = ""
-var timer = null
+let timer = null
 
 var checkVideoCount = 0
 setInterval( checkVideoPlaying, 5000 )
@@ -24,7 +24,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 
 console.log("at very start of the code on refresh ---")
-let videoData = gsheetMaster( "" );
+let videoData = gsheetMaster("");
 let videoDataRaw = "";
 let videoDataArr = [];
 
@@ -54,11 +54,11 @@ function onYouTubeIframeAPIReady() {
 
 // --------- This funciton will be called on start of the video ----------
 async function onPlayerReady(event) {
-    
+
     event.target.playVideo();
     VideoLength = player.getDuration()
     console.log("video length in seconds --- "+ VideoLength)
-    
+ 
     // Check for Live video if any ..
     liveVideoCheck()
 
@@ -72,11 +72,10 @@ async function onPlayerStateChange(event) {
         timer = clearTimeout(timer);
         console.log( "Timer state ----------- " + timer)
 
-        console.log( "video data raw -- " + videoDataRaw)
-        console.log( "video data array -- " + videoDataArr)
-        console.log( "video data -- " + videoData)
-        console.log( "video data array length -- " + videoDataArr.length)
-
+        console.log( "video data raw -------- " + videoDataRaw)
+        console.log( "video data array ------ " + videoDataArr)
+        console.log( "video data ------------ " + videoData)
+        
         if(videoDataArr.length > 0 ){
             // Player will play videos till the videoDataArr is empty --- if multiple video id in same cell
             let videoPlay = videoDataArr.shift().trim()
@@ -86,34 +85,34 @@ async function onPlayerStateChange(event) {
         else{
 
             console.log("---- player state change video end early ---")
-            await gsheetMaster( "" )
+            await gsheetMaster( videoDataRaw )
             console.log("next video start after current video end  -- "+ videoData)
             player.loadVideoById( videoData );
 
         }
     }
     if (event.data == YT.PlayerState.PLAYING) {
-
+       
         // this condition will be called on every event change as well as new video playing ---
         var videoId = player.getVideoData()["video_id"];
         console.log("currently Playing videoId --- " + videoId);
         console.log("is video Live ---- " + player.getVideoData().isLive)
         VideoLength = player.getDuration()
-        console.log("video length in seconds -------- "+ VideoLength)
-        console.log("Timer value before ------------- " + timer)
+        console.log("video length in seconds --- "+ VideoLength)
+        console.log("Timer value before ------ " + timer)
         if(!timer && !player.getVideoData().isLive  ){
             console.log("Timeout set for 7 second early ")
             timer = setTimeout( videoEndEarly , (VideoLength-7)*1000  )
-            console.log("Timer value After ---------- " + timer)
+            console.log("Timer value After ------ " + timer)
         }
 
     }
- 
+  
 }
 
 // ---------- video will end early and will change to the next video -------
 async function videoEndEarly(){
-    
+
     // because of new feature this function will be called before the end of the video 
     // 7 seconds before the video ends
     // this will act similar to the onPlayerStateChange() function
@@ -133,16 +132,15 @@ async function videoEndEarly(){
     
     } 
     else {
-    
-        console.log("---- gshet call in side video end early ---")
-        await gsheetMaster("");
+        
+        console.log("---- gshet call inside video end early ---")
+        await gsheetMaster(videoDataRaw);
         console.log("next video start after current video end  -- " + videoData);
         player.loadVideoById(videoData);
     
     }
     
 }
-
 
 
 // ---------------------- Live video check functions ------------------------
@@ -160,7 +158,7 @@ async function liveVideoCheck() {
         console.log( player.getVideoData().video_id != JSON.parse(res).data.video_id )
         console.log(player.getVideoData().video_id , JSON.parse(res).data.video_id )
 
-        if( !title.includes("Live Swaminarayan TV") && !title.includes("Bhajamrutam Dhun Parayan") && player.getVideoData().video_id != JSON.parse(res).data.video_id ){
+        if( !title.includes("Live Swaminarayan TV") && player.getVideoData().video_id != JSON.parse(res).data.video_id ){
 
             
             timer = clearTimeout(timer);
@@ -220,9 +218,8 @@ var checkLiveVideo = async ( callback ) => {
     }
 }
 
-
 // ---------------- master api call to get youtube id -----------------------
-async function gsheetMaster ( youtubeID ) {
+async function gsheetMaster( youtubeID ) {
 
     let body = {
         "youtubeID": youtubeID
@@ -237,7 +234,7 @@ async function gsheetMaster ( youtubeID ) {
         redirect: 'follow'
     };
 
-    await fetch( ApiUrl +"?sheet=kathaMaster&method=master", requestOptions)
+    await fetch( ApiUrl +"?sheet=mixTvMaster&method=master", requestOptions)
     .then(response => response.text())
     .then(result => {
 
@@ -265,6 +262,7 @@ async function gsheetMaster ( youtubeID ) {
         player.loadVideoById( videoData ); 
         player.playVideo();
 
+
     })   
     .catch(error => {
 
@@ -273,7 +271,6 @@ async function gsheetMaster ( youtubeID ) {
     });
 
 }
-
 
 //-------- this function will check video is playing or not every 5 seconds ----------
 async function checkVideoPlaying(){
@@ -288,8 +285,10 @@ async function checkVideoPlaying(){
 
         checkVideoCount = 0
         console.log("not playing any video  -------- video unavailable")
-        await gsheetMaster( "" )
+        await gsheetMaster( videoDataRaw )
     
     }
 
 }
+
+
