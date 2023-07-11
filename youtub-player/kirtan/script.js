@@ -211,11 +211,11 @@ async function gsheetMaster( youtubeID ) {
         videoDataArr = videoDataRaw.split(",")
         if(videoDataArr == ""){
 
-            videoData = videoDataRaw
+            videoData = videoDataRaw.trim()
         }
         else{
 
-            videoData = videoDataArr.shift()
+            videoData = videoDataArr.shift().trim()
         }
 
         // console.log( "video data raw -- " + videoDataRaw)
