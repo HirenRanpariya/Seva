@@ -60,7 +60,7 @@ async function onPlayerReady(event) {
     console.log("video length in seconds --- "+ VideoLength)
     
     // Check for Live video if any ..
-    liveVideoCheck()
+    // liveVideoCheck()
 
 }
 
@@ -167,8 +167,10 @@ async function liveVideoCheck() {
             console.log( "Timer state ----------- " + timer)
 
             console.log("Live video is playing Now -------------")
-            player.stopVideo();
-            player.loadVideoById(JSON.parse(res).data.video_id);
+            if(player.getVideoData().video_id != JSON.parse(res).data.video_id){
+                player.stopVideo();
+                player.loadVideoById(JSON.parse(res).data.video_id);
+            }
             currentLiveVideoId = JSON.parse(res).data.video_id
   
         }
@@ -283,6 +285,9 @@ async function checkVideoPlaying(){
     if( JSON.stringify( player.getVideoLoadedFraction()) == "0"){
         checkVideoCount += 1;
         console.log("Video is not playing right now current count is --> "+ checkVideoCount)
+    }
+    else{
+        checkVideoCount = 0;
     }
     if( checkVideoCount >= 3 ){
 
