@@ -11,7 +11,7 @@ var timer = null
 
 var checkVideoCount = 0
 setInterval( checkVideoPlaying, 5000 )
-setInterval(liveVideoCheck, 60000);  // 2 min
+setInterval(liveVideoCheck, 60000);  // 1 min
 // setInterval(liveVideoCheck, 1200000);  // 20 min
 
 
