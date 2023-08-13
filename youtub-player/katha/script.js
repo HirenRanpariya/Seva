@@ -6,6 +6,7 @@ if (environment == "Dev") {
     ApiUrl = "https://script.google.com/macros/s/AKfycbxxNn1KiffO9psTj7BFbje7_L6BkWR6x5bw7R55bg3aQWkoUFVWhwD9AOGQb6iWRXAezQ/exec";
 }
 
+// jATIN new test
 let VideoLength = ""
 var timer = null
 
