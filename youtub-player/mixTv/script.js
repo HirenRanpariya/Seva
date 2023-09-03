@@ -1,5 +1,5 @@
-let environment = "Dev";
-// let environment = "Prod"
+// let environment = "Dev";
+let environment = "Prod"
 let ApiUrl = "https://script.google.com/macros/s/AKfycbx-P28nEvQiP18eIkCPxJJA_veVux_JQ1XqvaOMN-FpTlp6Cd_xnThd_DFTmJ_fH3fG/exec";
 
 if (environment == "Dev") {
@@ -11,7 +11,7 @@ let timer = null
 
 var checkVideoCount = 0
 setInterval( checkVideoPlaying, 5000 )
-setInterval(liveVideoCheck, 120000);  // 2 min
+setInterval(liveVideoCheck, 60000);  // 1 min
 // setInterval(liveVideoCheck, 1200000);  // 20 min
 
 
