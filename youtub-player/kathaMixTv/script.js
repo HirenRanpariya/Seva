@@ -11,6 +11,11 @@ let timer = null
 
 var checkVideoCount = 0
 setInterval( checkVideoPlaying, 5000 )
+setInterval(liveVideoCheck, 120000);  // 2 min
+// setInterval(liveVideoCheck, 1200000);  // 20 min
+
+
+var currentLiveVideoId = "";
 
 var tag = document.createElement("script");
 tag.src = "https://www.youtube.com/iframe_api";
@@ -53,7 +58,10 @@ async function onPlayerReady(event) {
     event.target.playVideo();
     VideoLength = player.getDuration()
     console.log("video length in seconds --- "+ VideoLength)
-    
+ 
+    // Check for Live video if any ..
+    liveVideoCheck()
+
 }
 
 // ------------- function call on every player state change ---------------
@@ -88,10 +96,11 @@ async function onPlayerStateChange(event) {
         // this condition will be called on every event change as well as new video playing ---
         var videoId = player.getVideoData()["video_id"];
         console.log("currently Playing videoId --- " + videoId);
+        console.log("is video Live ---- " + player.getVideoData().isLive)
         VideoLength = player.getDuration()
         console.log("video length in seconds --- "+ VideoLength)
         console.log("Timer value before ------ " + timer)
-        if(!timer){
+        if(!timer && !player.getVideoData().isLive  ){
             console.log("Timeout set for 7 second early ")
             timer = setTimeout( videoEndEarly , (VideoLength-7)*1000  )
             console.log("Timer value After ------ " + timer)
@@ -133,6 +142,82 @@ async function videoEndEarly(){
     
 }
 
+
+// ---------------------- Live video check functions ------------------------
+async function liveVideoCheck() {
+
+    await checkLiveVideo( ( res ) => {
+        
+        console.log(res);
+        console.log("Live video Check ....... ");
+
+
+        let title = JSON.parse(res).data.title
+        console.log(title)
+        console.log(!title.includes("Live Swaminarayan TV"))
+        console.log( player.getVideoData().video_id != JSON.parse(res).data.video_id )
+        console.log(player.getVideoData().video_id , JSON.parse(res).data.video_id )
+
+        if( !title.includes("Live Swaminarayan TV") && player.getVideoData().video_id != JSON.parse(res).data.video_id ){
+
+            
+            timer = clearTimeout(timer);
+            console.log( "Timer state ----------- " + timer)
+
+            console.log("Live video is playing Now -------------")
+            player.stopVideo();
+            player.loadVideoById(JSON.parse(res).data.video_id);
+            currentLiveVideoId = JSON.parse(res).data.video_id
+  
+        }
+        else if( title.includes("Live Swaminarayan TV") && currentLiveVideoId != "Noid" ){
+
+            player.stopVideo();
+            
+            // youtubeId needs to be updated here check this later ------------------------------------------------------ ??????? 
+
+            player.loadVideoById( videoData );          
+            currentLiveVideoId = "Noid"
+
+        }
+    })
+}
+
+
+var checkLiveVideo = async ( callback ) => {
+    
+    try {
+
+        var requestOptions = {
+            method: "GET",
+            redirect: "follow",
+        };
+    
+        await fetch("https://cms.swaminarayanbhagwan.org/wp-json/sb/v1/video/live", requestOptions)
+            .then((response) => response.text())
+            .then((result) => {
+                
+                // console.log("this is result")
+                // console.log(result)
+                return callback(result)
+            
+            })        
+            .catch((error) => {
+
+                console.log("error", error)
+                return callback(false)
+                
+            });
+            
+            // return res
+            
+    }
+    catch (err) {
+        console.log(err);
+        return callback(false)
+    }
+}
+
 // ---------------- master api call to get youtube id -----------------------
 async function gsheetMaster( youtubeID ) {
 
@@ -149,7 +234,7 @@ async function gsheetMaster( youtubeID ) {
         redirect: 'follow'
     };
 
-    await fetch( ApiUrl +"?sheet=dhunMaster&method=master", requestOptions)
+    await fetch( ApiUrl +"?sheet=kathaMixMaster&method=master", requestOptions)
     .then(response => response.text())
     .then(result => {
 
@@ -205,3 +290,5 @@ async function checkVideoPlaying(){
     }
 
 }
+
+

@@ -3,7 +3,7 @@ let environment = "Prod"
 let ApiUrl = "https://script.google.com/macros/s/AKfycbx-P28nEvQiP18eIkCPxJJA_veVux_JQ1XqvaOMN-FpTlp6Cd_xnThd_DFTmJ_fH3fG/exec";
 
 if (environment == "Dev") {
-    ApiUrl = "https://script.google.com/macros/s/AKfycbzfIblAFKAEOHYiETxw_syYOw33elTgbBQD0_1W-LxHChD7TQwjdVA8XLAvmP95WWXlbg/exec";
+    ApiUrl = "https://script.google.com/macros/s/AKfycbxxNn1KiffO9psTj7BFbje7_L6BkWR6x5bw7R55bg3aQWkoUFVWhwD9AOGQb6iWRXAezQ/exec";
 }
 
 let VideoLength = ""
@@ -11,7 +11,7 @@ let timer = null
 
 var checkVideoCount = 0
 setInterval( checkVideoPlaying, 5000 )
-setInterval(liveVideoCheck, 60000);  // 1 min
+setInterval(liveVideoCheck, 120000);  // 2 min
 // setInterval(liveVideoCheck, 1200000);  // 20 min
 
 
