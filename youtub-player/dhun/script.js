@@ -10,7 +10,7 @@ let VideoLength = ""
 let timer = null
 
 var checkVideoCount = 0
-setInterval( checkVideoPlaying, 5000 )
+setInterval( checkVideoPlaying, 1000 )
 
 var tag = document.createElement("script");
 tag.src = "https://www.youtube.com/iframe_api";
@@ -93,7 +93,7 @@ async function onPlayerStateChange(event) {
         console.log("Timer value before ------ " + timer)
         if(!timer){
             console.log("Timeout set for 7 second early ")
-            timer = setTimeout( videoEndEarly , (VideoLength-7)*1000  )
+            timer = setTimeout( videoEndEarly , (VideoLength-10)*1000  )
             console.log("Timer value After ------ " + timer)
         }
 

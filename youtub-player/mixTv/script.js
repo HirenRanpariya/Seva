@@ -10,7 +10,7 @@ let VideoLength = ""
 let timer = null
 
 var checkVideoCount = 0
-setInterval( checkVideoPlaying, 5000 )
+setInterval( checkVideoPlaying, 1000 )
 setInterval(liveVideoCheck, 120000);  // 2 min
 // setInterval(liveVideoCheck, 1200000);  // 20 min
 
@@ -102,7 +102,7 @@ async function onPlayerStateChange(event) {
         console.log("Timer value before ------ " + timer)
         if(!timer && !player.getVideoData().isLive  ){
             console.log("Timeout set for 7 second early ")
-            timer = setTimeout( videoEndEarly , (VideoLength-7)*1000  )
+            timer = setTimeout( videoEndEarly , (VideoLength-10)*1000  )
             console.log("Timer value After ------ " + timer)
         }
 
