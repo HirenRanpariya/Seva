@@ -18,6 +18,7 @@ var player;
 var skipTitleArr = []
 var controls = {}
 let endEarlyTimeOut = null
+let subMasterTimeOut = null
 
 
 async function onYouTubeIframeAPIReady() {
@@ -76,6 +77,7 @@ async function onPlayerStateChange(event){
 
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
+        subMasterTimeOut = null
 
         console.log("Live video is playing")
 
@@ -116,6 +118,7 @@ async function videoEndEarly(){
     if(player.getVideoData().isLive ){
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
+        subMasterTimeOut = null
         console.log("Live video is playing")
 
     }
@@ -137,17 +140,30 @@ async function videoEndEarly(){
 
 // ----------------------------- Sub master function -----------------------------
 async function getSubMaster(){
-    console.log("Sub master")
-    let res = await callAPI( "getSubMaster" );
-    if(res.data.waitTime && res.data.waitTime < controls.subMasterInterval )
-    {   
-        console.log("wait time is less - " + res.data.waitTime )
-        setTimeout( setSubMaster , res.data.waitTime );
-    }
-    else{
-        console.log("-- subMaster API call - wait time is higher -- ")
-    }
 
+    if(player.getVideoData().isLive ){
+
+        // clearTimeout(endEarlyTimeOut) 
+        endEarlyTimeOut = null
+        subMasterTimeOut = null
+
+        console.log("Live video is playing")
+
+    }
+    else {
+
+        console.log("Sub master")
+        let res = await callAPI( "getSubMaster" );
+        if(res.data.waitTime && res.data.waitTime < controls.subMasterInterval )
+        {   
+            console.log("wait time is less - " + res.data.waitTime )
+            setTimeout( setSubMaster , res.data.waitTime );
+        }
+        else{
+            console.log("-- subMaster API call - wait time is higher -- ")
+        }
+        
+    }
 }
 
 async function setSubMaster(){
@@ -158,6 +174,7 @@ async function setSubMaster(){
     console.log( "youtube id from submaster - "+controls.youtubeId )
 
     endEarlyTimeOut = null
+    subMasterTimeOut = null
 
     player.stopVideo();
     player.loadVideoById( res.data.youtubeId );
