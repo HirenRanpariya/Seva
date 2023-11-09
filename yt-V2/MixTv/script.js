@@ -72,9 +72,23 @@ async function onPlayerReady(event){
 
 async function onPlayerStateChange(event){
 
-    // console.log(player.getVideoData().isLive)
-    if(player.getVideoData().isLive ){
+    if(event.data == YT.PlayerState.ENDED)
+    {
+        endEarlyTimeOut = null
 
+        console.log("Video has ended (No End Early), New video should play now")
+        let res = await callAPI("getNextVideo")
+        controls.youtubeId = res.data.youtubeId
+
+        player.loadVideoById( controls.youtubeId );
+    }
+    else if(player.getVideoData().isLive ){
+
+        console.log(player.getVideoData().title)
+        console.log("Title master = " + controls.titleMaster)
+        if(controls.titleMaster){
+            await setVideoTitle( player.getVideoData().title )
+        }
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
         subMasterTimeOut = null
@@ -82,34 +96,28 @@ async function onPlayerStateChange(event){
         console.log("Live video is playing")
 
     }
-    else{
+    else if (event.data == YT.PlayerState.PLAYING) {
 
-        if(event.data == YT.PlayerState.ENDED)
-        {
-            endEarlyTimeOut = null
+        // as soon as video starts playing we get this event called
+        console.log("event check")
 
-            console.log("Video has ended (No End Early), New video should play now")
-            let res = await callAPI("getNextVideo")
-            controls.youtubeId = res.data.youtubeId
-
-            player.loadVideoById( controls.youtubeId );
+        // console.log(player.getVideoData().title)
+        // console.log("Title master = " + controls.titleMaster)
+        if(controls.titleMaster){
+            await setVideoTitle( player.getVideoData().title )
         }
-        if (event.data == YT.PlayerState.PLAYING) {
 
-            // as soon as video starts playing we get this event called
-            console.log("event check")
-            console.log("Video TimeOut variable value --> "+ endEarlyTimeOut)
+        console.log("Video TimeOut variable value --> "+ endEarlyTimeOut)
 
-            if(!endEarlyTimeOut){
+        if(!endEarlyTimeOut){
 
-                console.log("Timeout set for "+ controls.endEarlyInterval/1000 +" second early ")
-                endEarlyTimeOut = setTimeout( videoEndEarly , player.getDuration()*1000 - controls.endEarlyInterval )
-            
-            }
+            console.log("Timeout set for "+ controls.endEarlyInterval/1000 +" second early ")
+            endEarlyTimeOut = setTimeout( videoEndEarly , player.getDuration()*1000 - controls.endEarlyInterval )
         
-        }   
+        }
+    
+    }   
 
-    }
     
 }
 
@@ -185,25 +193,32 @@ async function setSubMaster(){
 // ---------------------- Live video check functions ------------------------
 async function liveVideoCheck() {
 
-    let res = await liveVideoAPI()
+    if(!player.getVideoData().isLive){
 
-    // console.log("This is the video currently in player "+ player.getVideoData().video_id)
-    // console.log("This is the live video id -- " + res.data.video_id)
+        let res = await liveVideoAPI()
 
-    if( res.data.video_id != player.getVideoData().video_id ){
+        // console.log("This is the video currently in player "+ player.getVideoData().video_id)
+        // console.log("This is the live video id -- " + res.data.video_id)
 
-        // This returns if we should live this video or not  (if true then don't make it live)
-        let isLiveTitle = skipTitleArr.some( str => res.data.title.includes(str) );
-        console.log("Live video title : -- " + res.data.title + ",  \nIs Title in Skip list : -- " + isLiveTitle )
+        if( res.data.video_id != player.getVideoData().video_id ){
 
-        if(!isLiveTitle){
-            player.stopVideo();
-            player.loadVideoById( res.data.video_id );
+            // This returns if we should live this video or not  (if true then don't make it live)
+            let isLiveTitle = skipTitleArr.some( str => res.data.title.includes(str) );
+            console.log("Live video title : -- " + res.data.title + ",  \nIs Title in Skip list : -- " + isLiveTitle )
+
+            if(!isLiveTitle){
+                player.stopVideo();
+                player.loadVideoById( res.data.video_id );
+            }
         }
-    }
+        else{
+            console.log("Live Video is Alredy Playing")
+        }
+    }   
     else{
         console.log("Live Video is Alredy Playing")
     }
+
 
 }
 
