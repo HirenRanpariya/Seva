@@ -1,6 +1,6 @@
 // let environment = "UAT"
-let environment = "PROD"
-let apiUrl = "https://script.google.com/macros/s/AKfycbzTuLrkYlGR8yVArqWitiO483kZpgDmOoWawhsrs3kGGwQP_qPpL6Wr2ejoIfExCLbG/exec?myfunction="
+var environment = "PROD"
+var apiUrl = "https://script.google.com/macros/s/AKfycbzTuLrkYlGR8yVArqWitiO483kZpgDmOoWawhsrs3kGGwQP_qPpL6Wr2ejoIfExCLbG/exec?myfunction="
 if(environment == "UAT"){
     apiUrl = "https://script.google.com/macros/s/AKfycbxuPxfTXVGTfZyxucPsK0-N9PCML-zxKSBFC91xwoVk7M9MR0vWCNiaLeTs8KHK7Mw9/exec?myfunction="
 }
@@ -17,9 +17,9 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 var player;
 var skipTitleArr = []
 var controls = {}
-let endEarlyTimeOut = null
-let subMasterTimeOut = null
-
+var endEarlyTimeOut = null
+var subMasterTimeOut = null
+var checkVideoCount = 0
 
 async function onYouTubeIframeAPIReady() {
 
@@ -53,6 +53,7 @@ async function onYouTubeIframeAPIReady() {
 async function onPlayerReady(event){
 
     console.log("Player is Ready to play Video")
+    setInterval( checkVideoPlaying, controls.checkVideoInterval )
   
     if( controls.liveVideo ){
         
@@ -252,4 +253,28 @@ function callAPI( functionName ) {
                 reject(error);
             });
     });
+}
+
+
+//-------- this function will check video is playing or not every 5 seconds ----------
+async function checkVideoPlaying(){
+
+    // var isPlayable = player.getVideoData()["backgroundable"];
+    console.log( JSON.stringify( player.getVideoLoadedFraction() ) )
+    if( JSON.stringify( player.getVideoLoadedFraction()) == "0"){
+
+        checkVideoCount += 1;
+        console.log("Video is not playing right now current count is --> "+ checkVideoCount)
+    }
+    if( checkVideoCount >= 3 ){
+
+        checkVideoCount = 0
+        console.log("not playing any video  -------- video unavailable")
+
+        let res = await callAPI("getNextVideo")
+        controls.youtubeId = res.data.youtubeId
+        player.loadVideoById( controls.youtubeId );
+        
+    }
+
 }
