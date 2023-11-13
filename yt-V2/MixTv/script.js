@@ -36,7 +36,7 @@ async function onYouTubeIframeAPIReady() {
             fs: 0,                  // removes the full screen button
             modestbranding: 1,       // removes the youtube logo in right corner
             rel: 0,                 // 0 gives recomonded video only from the same channel at the end
-            
+
         },
         events: {
             'onReady': onPlayerReady,
@@ -54,8 +54,7 @@ async function onPlayerReady(event){
 
     console.log("Player is Ready to play Video")
     setInterval( checkVideoPlaying, controls.checkVideoInterval )
-
-  
+    
     if( controls.liveVideo ){
         
         setInterval( liveVideoCheck , controls.liveVideoInterval );
@@ -80,16 +79,23 @@ async function onPlayerStateChange(event){
 
         console.log("Video has ended (No End Early), New video should play now")
         let res = await callAPI("getNextVideo")
+
+        console.log(res)
+
         controls.youtubeId = res.data.youtubeId
 
         player.loadVideoById( controls.youtubeId );
     }
     else if(player.getVideoData().isLive ){
 
-        console.log(player.getVideoData().title)
-        console.log("Title master = " + controls.titleMaster)
+        // console.log(player.getVideoData().title)
+        // console.log("Title master = " + controls.titleMaster)
         if(controls.titleMaster){
+
+            console.log("Title is set to Gsheet and check title master api call")
             await setVideoTitle( player.getVideoData().title )
+            // call a api call to set the title match variable
+            console.log(await callAPI("checkTitleWithTitleMaster"))
         }
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
@@ -105,9 +111,13 @@ async function onPlayerStateChange(event){
 
         // console.log(player.getVideoData().title)
         // console.log("Title master = " + controls.titleMaster)
-        if(controls.titleMaster){
-            await setVideoTitle( player.getVideoData().title )
-        }
+        // if(controls.titleMaster){
+
+        //     console.log("Title is set to Gsheet and check title master api call")
+        //     await setVideoTitle( player.getVideoData().title )
+        //     // call a api call to set the title match variable
+        //     console.log(await callAPI("checkTitleWithTitleMaster"))
+        // }
 
         console.log("Video TimeOut variable value --> "+ endEarlyTimeOut)
 
@@ -254,7 +264,6 @@ function callAPI( functionName ) {
     });
 }
 
-
 //-------- this function will check video is playing or not every 5 seconds ----------
 async function checkVideoPlaying(){
 
@@ -275,5 +284,28 @@ async function checkVideoPlaying(){
         player.loadVideoById( controls.youtubeId );
         
     }
+
+}
+
+async function setVideoTitle ( videoTitle ) {
+
+    let body = {
+        "videoTitle": videoTitle
+    }
+    var raw = JSON.stringify(body);
+    var requestOptions = {
+        method: 'POST',
+        body: raw,
+        redirect: 'follow'
+    };
+
+    await fetch( apiUrl +"setVideoTitle", requestOptions)
+    .then(response => response.text())
+    .then(result => {
+        console.log(result)
+    })   
+    .catch(error => {
+        console.log('error', error)
+    });
 
 }
