@@ -76,6 +76,7 @@ async function onPlayerStateChange(event){
     if(event.data == YT.PlayerState.ENDED)
     {
         endEarlyTimeOut = null
+        checkVideoCount = 0
 
         console.log("Video has ended (No End Early), New video should play now")
         let res = await callAPI("getNextVideo")
@@ -146,6 +147,7 @@ async function videoEndEarly(){
 
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
+        checkVideoCount = 0
 
         console.log("Video has ended ( End Early Function ), New video should play now")
         
@@ -267,22 +269,33 @@ function callAPI( functionName ) {
 //-------- this function will check video is playing or not every 5 seconds ----------
 async function checkVideoPlaying(){
 
-    // var isPlayable = player.getVideoData()["backgroundable"];
-    console.log( JSON.stringify( player.getVideoLoadedFraction() ) )
-    if( JSON.stringify( player.getVideoLoadedFraction()) == "0"){
+    if(player.getVideoData().isLive ){
 
-        checkVideoCount += 1;
-        console.log("Video is not playing right now current count is --> "+ checkVideoCount)
-    }
-    if( checkVideoCount >= 3 ){
+        // clearTimeout(endEarlyTimeOut) 
+        endEarlyTimeOut = null
+        subMasterTimeOut = null
 
-        checkVideoCount = 0
-        console.log("not playing any video  -------- video unavailable")
+        console.log("Live video is playing")
 
-        let res = await callAPI("getNextVideo")
-        controls.youtubeId = res.data.youtubeId
-        player.loadVideoById( controls.youtubeId );
-        
+
+        // var isPlayable = player.getVideoData()["backgroundable"];
+        console.log( JSON.stringify( player.getVideoLoadedFraction() ) )
+        if( JSON.stringify( player.getVideoLoadedFraction()) == "0"){
+
+            checkVideoCount += 1;
+            console.log("Video is not playing right now current count is --> "+ checkVideoCount)
+        }
+        if( checkVideoCount >= 3 ){
+
+            checkVideoCount = 0
+            console.log("not playing any video  -------- video unavailable")
+
+            let res = await callAPI("getNextVideo")
+            controls.youtubeId = res.data.youtubeId
+            player.loadVideoById( controls.youtubeId );
+            
+        }
+
     }
 
 }
