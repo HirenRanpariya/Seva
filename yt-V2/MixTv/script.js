@@ -91,10 +91,9 @@ async function onPlayerStateChange(event){
 
         // console.log(player.getVideoData().title)
         // console.log("Title master = " + controls.titleMaster)
+        console.log("Title is set to Gsheet and check title master api call")
+        await setVideoTitle( player.getVideoData().title )
         if(controls.titleMaster){
-
-            console.log("Title is set to Gsheet and check title master api call")
-            await setVideoTitle( player.getVideoData().title )
             // call a api call to set the title match variable
             console.log(await callAPI("checkTitleWithTitleMaster"))
         }
