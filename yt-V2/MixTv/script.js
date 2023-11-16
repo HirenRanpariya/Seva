@@ -268,7 +268,17 @@ function callAPI( functionName ) {
 //-------- this function will check video is playing or not every 5 seconds ----------
 async function checkVideoPlaying(){
 
-    if(player.getVideoData().isLive ){
+    var res = await callAPI("getRefreshValue")
+    console.log("get refresh value -- ")
+    console.log(res)
+    if( res.data.refreshValue ){
+        await callAPI("setRefreshValue")
+        console.log("set refresh value to false")
+        setTimeout(()=>{
+            location.reload(true);
+        }, 2000);
+    }
+    else if(player.getVideoData().isLive ){
 
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
