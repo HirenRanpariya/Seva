@@ -220,6 +220,8 @@ async function liveVideoCheck() {
             console.log("Live video title : -- " + res.data.title + ",  \nIs Title in Skip list : -- " + isLiveTitle )
 
             if(!isLiveTitle){
+                console.log("set Is Video Live set to false  --- ")
+                await callAPI("setVideoLive")
                 player.stopVideo();
                 player.loadVideoById( res.data.video_id );
             }
