@@ -272,7 +272,7 @@ async function checkVideoPlaying(){
             location.reload(true);
         }, 2000);
     }
-    else if(player.getVideoData().isLive ){
+    // else if(player.getVideoData().isLive ){
 
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
@@ -288,6 +288,9 @@ async function checkVideoPlaying(){
             checkVideoCount += 1;
             console.log("Video is not playing right now current count is --> "+ checkVideoCount)
         }
+        else{
+            checkVideoCount = 0
+        }
         if( checkVideoCount >= 3 ){
 
             checkVideoCount = 0
@@ -299,6 +302,6 @@ async function checkVideoPlaying(){
             
         }
 
-    }
+    // }
 
 }
