@@ -84,7 +84,7 @@ async function onPlayerStateChange(event){
 
         player.loadVideoById( controls.youtubeId );
     }
-    else if(player.getVideoData().isLive ){
+    else if(player?.getVideoData()?.isLive ){
 
         console.log(player.getVideoData().title)
         console.log("Title master = " + controls.titleMaster)
@@ -126,7 +126,7 @@ async function onPlayerStateChange(event){
 
 async function videoEndEarly(){
 
-    if(player.getVideoData().isLive ){
+    if(player?.getVideoData()?.isLive ){
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
         subMasterTimeOut = null
@@ -153,7 +153,7 @@ async function videoEndEarly(){
 // ----------------------------- Sub master function -----------------------------
 async function getSubMaster(){
 
-    if(player.getVideoData().isLive ){
+    if(player?.getVideoData()?.isLive ){
 
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
@@ -197,7 +197,7 @@ async function setSubMaster(){
 // ---------------------- Live video check functions ------------------------
 async function liveVideoCheck() {
 
-    if(!player.getVideoData().isLive){
+    if(!player?.getVideoData()?.isLive){
 
         let res = await liveVideoAPI()
 
@@ -273,7 +273,7 @@ async function checkVideoPlaying(){
             location.reload(true);
         }, 2000);
     }
-    // else if(player.getVideoData().isLive ){
+    // else if(player?.getVideoData()?.isLive ){
 
         // clearTimeout(endEarlyTimeOut) 
         endEarlyTimeOut = null
