@@ -291,7 +291,7 @@ async function checkVideoPlaying(){
         else{
             checkVideoCount = 0
         }
-        if( checkVideoCount >= 3 ){
+        if( checkVideoCount >= 6 ){
 
             checkVideoCount = 0
             console.log("not playing any video  -------- video unavailable")
