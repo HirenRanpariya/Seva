@@ -283,8 +283,8 @@ async function checkVideoPlaying(){
     // else if(player?.getVideoData()?.isLive ){
 
         // clearTimeout(endEarlyTimeOut) 
-        endEarlyTimeOut = null
-        subMasterTimeOut = null
+        // endEarlyTimeOut = null
+        // subMasterTimeOut = null
 
         // console.log("Live video is playing")
 
