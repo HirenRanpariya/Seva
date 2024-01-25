@@ -84,8 +84,8 @@ async function onPlayerStateChange(event){
         console.log(res)
 
         controls.youtubeId = res.data.youtubeId
-
         player.loadVideoById( controls.youtubeId );
+        
     }
     else if(player?.getVideoData()?.isLive ){
 
@@ -119,14 +119,14 @@ async function onPlayerStateChange(event){
         //     console.log(await callAPI("checkTitleWithTitleMaster"))
         // }
 
-        console.log("Video TimeOut variable value --> "+ endEarlyTimeOut)
+        // console.log("Video TimeOut variable value --> "+ endEarlyTimeOut)
 
-        if(!endEarlyTimeOut){
+        // if(!endEarlyTimeOut){
 
-            console.log("Timeout set for "+ controls.endEarlyInterval/1000 +" second early ")
-            endEarlyTimeOut = setTimeout( videoEndEarly , player.getDuration()*1000 - controls.endEarlyInterval )
+        //     console.log("Timeout set for "+ controls.endEarlyInterval/1000 +" second early ")
+        //     endEarlyTimeOut = setTimeout( videoEndEarly , player.getDuration()*1000 - controls.endEarlyInterval )
         
-        }
+        // }
     
     }   
 
