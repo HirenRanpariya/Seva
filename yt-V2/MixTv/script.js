@@ -5,6 +5,9 @@ if(environment == "UAT"){
     apiUrl = "https://script.google.com/macros/s/AKfycbxuPxfTXVGTfZyxucPsK0-N9PCML-zxKSBFC91xwoVk7M9MR0vWCNiaLeTs8KHK7Mw9/exec?myfunction="
 }
 
+const logapiUrl = "https://script.google.com/macros/s/AKfycbzviWk2P-gwRvEi6FC5pFZIpW_VenVH8gZ55wwR8UxhRmKkIKir60uX4L1mdRPh3h1F/exec"
+const documentId = "1EOfglpZhvbfGeVdaT60i_TrVotW-mhiWoGAIc_QXB3Q"
+
 console.log("Jay swaminarayan")
 
 
@@ -53,6 +56,8 @@ async function onYouTubeIframeAPIReady() {
 async function onPlayerReady(event){
 
     console.log("Player is Ready to play Video")
+    logApi(logapiUrl, documentId , "Player start." )
+
     setInterval( checkVideoPlaying, controls.checkVideoInterval )
     
     if( controls.liveVideo ){
@@ -79,13 +84,12 @@ async function onPlayerStateChange(event){
         checkVideoCount = 0
 
         console.log("Video has ended (No End Early), New video should play now")
+        logApi(logapiUrl, documentId ,"Video has ended ( Function OnPlayerStateChange ) : "+ controls.youtubeId )
         let res = await callAPI("getNextVideo")
-
-        console.log(res)
-
         controls.youtubeId = res.data.youtubeId
+
         player.loadVideoById( controls.youtubeId );
-        
+
     }
     else if(player?.getVideoData()?.isLive ){
 
@@ -149,6 +153,7 @@ async function videoEndEarly(){
         checkVideoCount = 0
 
         console.log("Video has ended ( End Early Function ), New video should play now")
+        logApi(logapiUrl, documentId ,"Video has ended ( End Early Function ) : "+ controls.youtubeId )
         
         let res = await callAPI("getNextVideo")
         controls.youtubeId = res.data.youtubeId
@@ -193,6 +198,7 @@ async function setSubMaster(){
     let res = await callAPI( "setSubMaster" );
     controls.youtubeId = res.data.youtubeId
     console.log( "youtube id from submaster - "+controls.youtubeId )
+    logApi(logapiUrl, documentId ,"SubMaster Is Playing (Function setSubMaster) : "+ controls.youtubeId )
 
     endEarlyTimeOut = null
     subMasterTimeOut = null
@@ -221,6 +227,7 @@ async function liveVideoCheck() {
 
             if(!isLiveTitle){
                 console.log("set Is Video Live set to false  --- ")
+                logApi(logapiUrl, documentId ,"Live video will Start Playing (Function LiveVideoCheck) : "+ res.data.video_id )
                 await callAPI("setVideoLive")
                 player.stopVideo();
                 player.loadVideoById( res.data.video_id );
@@ -276,6 +283,7 @@ async function checkVideoPlaying(){
     if( res.data.refreshValue ){
         await callAPI("setRefreshValue")
         console.log("set refresh value to false")
+        logApi(logapiUrl, documentId , "Player Reload." )
         setTimeout(()=>{
             location.reload(true);
         }, 2000);
@@ -290,7 +298,7 @@ async function checkVideoPlaying(){
 
 
         // var isPlayable = player.getVideoData()["backgroundable"];
-        console.log( JSON.stringify( player.getVideoLoadedFraction() ) )
+        console.log(JSON.stringify(player.getVideoLoadedFraction()) + " " + "check Video count --> "+ checkVideoCount);
         if( JSON.stringify( player.getVideoLoadedFraction()) == "0"){
 
             checkVideoCount += 1;
@@ -303,6 +311,7 @@ async function checkVideoPlaying(){
 
             checkVideoCount = 0
             console.log("not playing any video  -------- video unavailable")
+            logApi(logapiUrl, documentId ,"Video Not Playing (Function checkVideoPlaying) : "+ controls.youtubeId )
 
             let res = await callAPI("getNextVideo")
             controls.youtubeId = res.data.youtubeId
@@ -333,6 +342,62 @@ async function setVideoTitle ( videoTitle ) {
     })   
     .catch(error => {
         console.log('error', error)
+    });
+
+}
+
+
+
+function getCurrentDateTimeIST() {
+    const options = {
+        timeZone: 'Asia/Kolkata',  // Set the time zone to Indian Standard Time
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      };
+    
+      const dateTimeFormatter = new Intl.DateTimeFormat('en-IN', options);
+      const formattedDateTime = dateTimeFormatter.format(new Date());
+    
+      return formattedDateTime;
+  }
+
+async function logApi ( logapiUrl, documentId, newText  ) {
+
+    // let body = {
+    //     "youtubeID": youtubeID, 
+    //     "Played": 1
+    // }
+
+    const body = {
+        documentId: documentId,
+        newText: getCurrentDateTimeIST() +" - " +  newText,
+    };
+
+    var raw = JSON.stringify(body);
+
+    // console.log(raw)
+
+    var requestOptions = {
+        method: 'POST',
+        body: raw,
+        redirect: 'follow'
+    };
+
+    await fetch("https://script.google.com/macros/s/AKfycbzviWk2P-gwRvEi6FC5pFZIpW_VenVH8gZ55wwR8UxhRmKkIKir60uX4L1mdRPh3h1F/exec", requestOptions)
+    .then(response => response.text())
+    .then(result => {
+
+        console.log(result)
+       
+    })   
+    .catch(error => {
+
+        console.log('error', error)
+
     });
 
 }
