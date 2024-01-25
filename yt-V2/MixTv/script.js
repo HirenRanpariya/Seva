@@ -278,8 +278,6 @@ function callAPI( functionName ) {
 async function checkVideoPlaying(){
 
     var res = await callAPI("getRefreshValue")
-    console.log("get refresh value -- ")
-    console.log(res)
     if( res.data.refreshValue ){
         await callAPI("setRefreshValue")
         console.log("set refresh value to false")
@@ -288,38 +286,28 @@ async function checkVideoPlaying(){
             location.reload(true);
         }, 2000);
     }
-    // else if(player?.getVideoData()?.isLive ){
+    console.log(JSON.stringify(player.getVideoLoadedFraction()) + " " + "check Video count --> "+ checkVideoCount);
+    if( JSON.stringify( player.getVideoLoadedFraction()) == "0"){
 
-        // clearTimeout(endEarlyTimeOut) 
-        // endEarlyTimeOut = null
-        // subMasterTimeOut = null
+        checkVideoCount += 1;
+        console.log("Video is not playing right now current count is --> "+ checkVideoCount)
+        logApi(logapiUrl, documentId ,"Not Loading (Function checkVideoPlaying) : "+ checkVideoCount )
 
-        // console.log("Live video is playing")
+    }
+    else{
+        checkVideoCount = 0
+    }
+    if( checkVideoCount >= 6 ){
 
+        checkVideoCount = 0
+        console.log("not playing any video  -------- video unavailable")
+        logApi(logapiUrl, documentId ,"Video Not Playing (Function checkVideoPlaying) : "+ controls.youtubeId )
 
-        // var isPlayable = player.getVideoData()["backgroundable"];
-        console.log(JSON.stringify(player.getVideoLoadedFraction()) + " " + "check Video count --> "+ checkVideoCount);
-        if( JSON.stringify( player.getVideoLoadedFraction()) == "0"){
-
-            checkVideoCount += 1;
-            console.log("Video is not playing right now current count is --> "+ checkVideoCount)
-        }
-        else{
-            checkVideoCount = 0
-        }
-        if( checkVideoCount >= 6 ){
-
-            checkVideoCount = 0
-            console.log("not playing any video  -------- video unavailable")
-            logApi(logapiUrl, documentId ,"Video Not Playing (Function checkVideoPlaying) : "+ controls.youtubeId )
-
-            let res = await callAPI("getNextVideo")
-            controls.youtubeId = res.data.youtubeId
-            player.loadVideoById( controls.youtubeId );
-            
-        }
-
-    // }
+        let res = await callAPI("getNextVideo")
+        controls.youtubeId = res.data.youtubeId
+        player.loadVideoById( controls.youtubeId );
+        
+    }
 
 }
 
