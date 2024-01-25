@@ -234,7 +234,7 @@ async function checkVideoPlaying() {
     // endEarlyTimeOut = null;
     // subMasterTimeOut = null;
 
-    console.log("Live video is playing");
+    // console.log("Live video is playing");
     console.log(JSON.stringify(player.getVideoLoadedFraction()) + " " + "check Video count --> "+ checkVideoCount);
     if (JSON.stringify(player.getVideoLoadedFraction()) == "0") {
         checkVideoCount += 1;
