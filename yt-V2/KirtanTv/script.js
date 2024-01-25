@@ -6,7 +6,7 @@ if(environment == "UAT"){
 }
 
 const logapiUrl = "https://script.google.com/macros/s/AKfycbzviWk2P-gwRvEi6FC5pFZIpW_VenVH8gZ55wwR8UxhRmKkIKir60uX4L1mdRPh3h1F/exec"
-const documentId = "1tpuUr1V9RYnWEdaaoluKFPRg69WhNiDGheaj9fkZqOE"
+const documentId = "1gT15r0CYbWEb-5L6pwa8-KcPg1QhnbrrwYJUWFVTmog"
 
 console.log("Jay swaminarayan")
 
