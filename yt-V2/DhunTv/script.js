@@ -87,20 +87,13 @@ async function onPlayerStateChange(event) {
         console.log("Live video is playing");
     } else if (event.data == YT.PlayerState.PLAYING) {
         // as soon as video starts playing we get this event called
-        console.log("event check");
+        console.log("event check - video is playing");
+        // console.log("Video TimeOut variable value --> " + endEarlyTimeOut);
 
-        // console.log(player.getVideoData().title)
-        // console.log("Title master = " + controls.titleMaster)
-        if (controls.titleMaster) {
-            await setVideoTitle(player.getVideoData().title);
-        }
-
-        console.log("Video TimeOut variable value --> " + endEarlyTimeOut);
-
-        if (!endEarlyTimeOut) {
-            console.log("Timeout set for " + controls.endEarlyInterval / 1000 + " second early ");
-            endEarlyTimeOut = setTimeout(videoEndEarly, player.getDuration() * 1000 - controls.endEarlyInterval);
-        }
+        // if (!endEarlyTimeOut) {
+        //     console.log("Timeout set for " + controls.endEarlyInterval / 1000 + " second early ");
+        //     endEarlyTimeOut = setTimeout(videoEndEarly, player.getDuration() * 1000 - controls.endEarlyInterval);
+        // }
     }
 }
 
