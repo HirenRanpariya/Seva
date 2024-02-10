@@ -31,7 +31,7 @@ async function onYouTubeIframeAPIReady() {
     console.log('Get Controls API data:', controls);
    
     player = new YT.Player('player', {
-        videoId: controls.youtubeId,
+        videoId: controls.youtubeId.trim(),
         playerVars: {
             'autoplay': 1,
             controls: 1 ,            // 0 disables the controls on video
