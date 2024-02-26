@@ -302,3 +302,4 @@ async function logApi ( logapiUrl, documentId, newText  ) {
     });
 
 }
+
