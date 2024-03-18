@@ -1,6 +1,6 @@
 // let environment = "UAT"
 var environment = "PROD";
-var apiUrl = "https://script.google.com/macros/s/AKfycbzFm7H5HUK_SBEqQ9WHgIvKVsdjhSZo3pRdgoVvoopnjM0rD6hHN60-1tmYKxtoqmRO/exec?myfunction=";
+var apiUrl = "https://script.google.com/macros/s/AKfycbziS9pkmItRUq28Ol_q27vlfdZJ_Q1uzJl0WSJqAdWIAkQIdfK2cfrtveNZ31GTWI25/exec?myfunction=";
 if (environment == "UAT") {
     apiUrl = "https://script.google.com/macros/s/AKfycbxuPxfTXVGTfZyxucPsK0-N9PCML-zxKSBFC91xwoVk7M9MR0vWCNiaLeTs8KHK7Mw9/exec?myfunction=";
 }
