@@ -1,6 +1,6 @@
 // let environment = "UAT"
 var environment = "PROD"
-var apiUrl = "https://script.google.com/macros/s/AKfycbzTuLrkYlGR8yVArqWitiO483kZpgDmOoWawhsrs3kGGwQP_qPpL6Wr2ejoIfExCLbG/exec?myfunction="
+var apiUrl = "https://script.google.com/macros/s/AKfycbzM9RuC6xOCFv43HSMat4yhWNblacUU7CAeGi50sl3-N1iv3-O6AnpGnA2_Mgz4Y-ho/exec?myfunction="
 if(environment == "UAT"){
     apiUrl = "https://script.google.com/macros/s/AKfycbxuPxfTXVGTfZyxucPsK0-N9PCML-zxKSBFC91xwoVk7M9MR0vWCNiaLeTs8KHK7Mw9/exec?myfunction="
 }
